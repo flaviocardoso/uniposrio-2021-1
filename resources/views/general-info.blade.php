@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout.layout')
 
 @section('content')
 <p><strong>UNIPOSRIO-F&Iacute;SICA</strong></p>

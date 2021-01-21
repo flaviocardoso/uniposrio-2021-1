@@ -46,10 +46,10 @@
           <td width="14%" align="center">
           <a title="Collaborators" href="?pgn=colaboradores">
           <img border="0" src="images/inf-colaboradores.png" align="right" width="116" height="30"></a></td>
-          <td width="6%" align="center"><a title="Credits" href="?pgn=creditos">
+          <td width="6%" align="center"><a title="Credits" href="/credits">
           <img border="0" src="images/inf-creditos.png" width="67" height="30"></a></td>
           <td width="22%" align="center">
-          <a title="Letter of recommendation" href="?pgn=cartaDeRecomendacao">
+          <a title="Letter of recommendation" href="/recommendation-letter">
           <img border="0" src="images/inf-carta.png" align="left" width="171" height="30"></a></td>
           <td width="15%" align="center">&nbsp;</td>
           <td width="15%" align="center">&nbsp;</td>

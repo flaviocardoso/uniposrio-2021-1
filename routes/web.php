@@ -23,5 +23,17 @@ Route::get('/recommendation-letter', function () {
     return view('recommendation-letter');
 });
 Route::get('/subscribes', function () {
-    return view('subscribes');
+    return view('discente.subscribes');
+});
+Route::get('/credits', function () {
+    return view('credits');
+});
+Route::get('/new-subscribe', function () {
+    return view('discente.new-subscribe');
+});
+Route::get('/redefine-password', function () {
+    return view('discente.redefine-password');
+});
+Route::get('/docente', function () {
+    return view('docente.docente');
 });

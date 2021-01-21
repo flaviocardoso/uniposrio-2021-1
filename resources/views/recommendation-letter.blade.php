@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout.layout')
 
 @section('content')
 <b>Carta de Recomentação</b><br><br>

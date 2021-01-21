@@ -1,4 +1,5 @@
-@extends('layout.layout')
+@extends
+('layout.layout')
 
 @section('content')
 <div align="center">

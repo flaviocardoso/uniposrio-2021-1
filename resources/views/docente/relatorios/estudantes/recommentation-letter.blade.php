@@ -3,6 +3,7 @@
 @section('content')
 <form action="" method="post" enctype="multipart/form-data" name="formCartaRecomendacao">
     <fieldset style='background:rgba(255,255,255,0.6);'><legend>Carta de Recomendação</legend>
+    
 				<fieldset class="destacarCarta"><legend>Exame - </legend>
 				<table border="0" cellpadding="0" cellspacing="5">
 				  <tr>
@@ -53,7 +54,7 @@
 					</tr>
 				</table>
 				</fieldset>
-				<p> 
+				<p>
 				  
 	  </p>
 				

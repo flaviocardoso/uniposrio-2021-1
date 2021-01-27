@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+
 return [
 
     /*
@@ -46,6 +48,16 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students',
+        ],
+
+        'collaborator' => [
+            'driver' => 'session',
+            'provider' => 'collaborators'
+        ]
     ],
 
     /*
@@ -75,6 +87,16 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+        ],
+
+        'collaborators' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Collaborator::class,
+        ]
     ],
 
     /*

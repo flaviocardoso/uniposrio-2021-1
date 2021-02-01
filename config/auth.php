@@ -80,7 +80,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => \App\Models\User::class,
         ],
 
         // 'users' => [
@@ -90,12 +90,12 @@ return [
 
         'students' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Student::class,
+            'model' => \App\Models\Student::class,
         ],
 
         'collaborators' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Collaborator::class,
+            'model' => \App\Models\Collaborator::class,
         ]
     ],
 
@@ -117,6 +117,18 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'students' => [
+            'provider' => 'students',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'collaborators' => [
+            'provider' => 'collaborators',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

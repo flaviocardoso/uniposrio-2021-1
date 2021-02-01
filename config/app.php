@@ -156,12 +156,19 @@ return [
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        // Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        /**
+         * 
+         * minhas provides
+         */
+        // App\Providers\StudentPasswordResetServiceProvider::class,
+        // App\Providers\CollaboratorPasswordResetServiceProvider::class,
+        App\Providers\PasswordResetServiceProvider::class,
         /*
          * Package Service Providers...
          */

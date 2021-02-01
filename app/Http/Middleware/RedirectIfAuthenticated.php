@@ -25,23 +25,21 @@ class RedirectIfAuthenticated
             // if (Auth::guard($guard)->check()) {
             //     return redirect(RouteServiceProvider::HOME);
             // }
-            switch ($guard) {
-                case 'admin':
-                    if (Auth::guard($guard)->check()) {
-                        return redirect()->route('dashboard.admin');
-                    }
-
-                case 'collaborator':
-                    if (Auth::guard($guard)->check()) {
-                        return redirect()->route('dashboard.collaborator');
-                    }
-                
-                case 'student':
-                    if (Auth::guard($guard)->check()) {
-                        return redirect()->route('dashboard.student');
-                    }
-                    break;
+            
+            if ($guard == 'admin' && Auth::guard($guard)->check()) {
+                return redirect()->route('dashboard.admin');
             }
+
+        
+            if ($guard == 'collaborator' && Auth::guard($guard)->check()) {
+                return redirect()->route('dashboard.collaborator');
+            }
+        
+        
+            if ($guard == 'student' && Auth::guard($guard)->check()) {
+                return redirect()->route('dashboard.student');
+            }
+            
         }
 
         return $next($request);

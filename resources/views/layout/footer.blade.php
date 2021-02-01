@@ -44,7 +44,7 @@
           <td width="14%" align="center">&nbsp;</td>
           <td width="14%" align="center">&nbsp;</td>
           <td width="14%" align="center">
-          <a title="Collaborators" href="?pgn=colaboradores">
+          <a title="Collaborators" href="/collaborator">
           <img border="0" src="images/inf-colaboradores.png" align="right" width="116" height="30"></a></td>
           <td width="6%" align="center"><a title="Credits" href="/credits">
           <img border="0" src="images/inf-creditos.png" width="67" height="30"></a></td>

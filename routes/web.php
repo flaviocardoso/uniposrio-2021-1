@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,83 +23,112 @@ Route::get('/general-info', function () {
 Route::get('/recommendation-letter', function () {
     return view('recommendation-letter');
 });
-Route::get('/credits', function () {
-    return view('credits');
-});
+Route::get('/credits', [App\Http\Controllers\CreditsController::class, 'index']);
 
 Route::prefix('student')->group(function() {
     // esterno
-    Route::get('/login', 'Auth\StudentLoginController@formLogin')->name('login.student'); // formulário de login
-    Route::post('/login', 'Auth\StudentLoginController@submitLogin')->name('login.student.submit'); // login
-    Route::get('/logout', 'Auth\StudentLoginController@logout')->name('logout.student'); // logout
-    Route::get('/forgot-password', 'Auth\StudentLoginController@formForgotPassword')->name('forgotPassword.student'); // formulário de esqueceu a senha
-    Route::post('/forgot-password', 'Auth\StudentLoginController@submitForgotPassword')->name('forgotPassword.student.submit'); // envia um email com o token de verificação
-    Route::get('/register', 'Auth\StudentLoginController@formRegister')->name('register.student'); // formulário de novo estudante
-    Route::post('/register', 'Auth\StudentLoginController@submitRegister')->name('register.student.submit'); // adicioanr novo student
+    Route::get('/login', [App\Http\Controllers\Auth\StudentLoginController::class, 'index'])->name('login.student'); // formulário de login
+    Route::post('/login', [App\Http\Controllers\Auth\StudentLoginController::class, 'login'])->name('login.student.submit'); // login
+    Route::get('/logout', [App\Http\Controllers\Auth\StudentLoginController::class, 'logout'])->name('logout.student'); // logout
+    Route::get('/forgot-password', [App\Http\Controllers\Auth\StudentForgotPasswordController::class, 'index'])->name('forgotPassword.student'); // formulário de esqueceu a senha
+    Route::post('/forgot-password', [App\Http\Controllers\Auth\StudentForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.student.submit'); // envia um email com o token de verificação
+    Route::get('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'index'])->name('resetPassword.student'); // formulário de esqueceu a senha
+    Route::post('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'reset'])->name('resetPassword.student.submit'); // envia um email com o token de verificação
+    Route::get('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'index'])->name('register.student'); // formulário de novo estudante
+    Route::post('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'store'])->name('register.student.submit'); // adicioanr novo student
     // interno
-    Route::get('/', 'Auth\StudentController@index')->name('dashboard.student'); // verifica se já está registrado no exam
-    Route::post('/register-exam', 'Auth\StudentController@registerExam')->name('dashboard.student.register.exam'); // registrar para o exam
-    Route::get('/redefine-password', 'Auth\StudentController@formRedefinePassword')->name('dashboard.student.redefine.password'); // formulário de redefinir senha
-    Route::post('/redefine-password', 'Auth\StudentController@submitRedefinePassword')->name('dashboard.student.redefine.password.submit'); // salvar uma nova senha
-    Route::get('/personal-information', 'Auth\StudentController@formPersonalInfo')->name('dashboard.student.personal.info');
-    Route::post('/personal-information', 'Auth\StudentController@personalInfoSave')->name('dashboard.student.personal.info.save');
-    Route::put('/personal-information', 'Auth\StudentController@personalInfoUpdate')->name('dashboard.student.personal.info.update');
-    Route::get('/add-institution', 'Auth\StudentController@formAddInstituition')->name('dashboard.student.add.institution');
-    Route::post('/add-institution', 'Auth\StudentController@addInstituitionSave')->name('dashboard.student.add.institution.save');
-    Route::put('/add-institution', 'Auth\StudentController@addInstituitionUpdate')->name('dashboard.student.add.institution.update');
-    Route::get('/add-area', 'Auth\StudentController@formAddArea')->name('dashboard.student.add.area');
-    Route::post('/add-area', 'Auth\StudentController@addAreaSave')->name('dashboard.student.add.area.save');
-    Route::update('/add-area', 'Auth\StudentController@addAreaUpdate')->name('dashboard.student.add.area.update');
-    Route::get('/add-document', 'Auth\StudentController@formAddDocument')->name('dashboard.student.add.document');
-    Route::post('/add-document', 'Auth\StudentController@addDocumentSave')->name('dashboard.student.add.document.save');
-    Route::update('/add-document', 'Auth\StudentController@addDocumentUpdate')->name('dashboard.student.add.document.update');
-    Route::get('/recommendation-letter', 'Auth\StudentController@formRecommendationLetter')->name('dashboard.student.recommentation.letter');
-    Route::get('/schedule-interview', 'Auth\StudentController@formScheduleInterview')->name('dashboard.student.schedule.interview');
-    Route::post('/schedule-interview', 'Auth\StudentController@scheduleInterviewSave')->name('dashboard.student.schedule.interview.save');
-    Route::put('/schedule-interview', 'Auth\StudentController@scheduleInterviewUpdate')->name('dashboard.student.schedule.interview.update');
+    Route::get('/', [App\Http\Controllers\Auth\StudentController::class, 'index'])->name('dashboard.student'); // verifica se já está registrado no exam
+    Route::post('/register-exam', 'App\Http\Controllers\Auth\StudentController@registerExam')->name('dashboard.student.register.exam'); // registrar para o exam
+    Route::get('/redefine-password', 'App\Http\Controllers\Auth\StudentController@formRedefinePassword')->name('dashboard.student.redefine.password'); // formulário de redefinir senha
+    Route::post('/redefine-password', 'App\Http\Controllers\Auth\StudentController@submitRedefinePassword')->name('dashboard.student.redefine.password.submit'); // salvar uma nova senha
+    Route::get('/personal-information', 'App\Http\Controllers\StudentPersonalInfoController@index')->name('dashboard.student.personal.info');
+    Route::post('/personal-information', 'App\Http\Controllers\StudentPersonalInfoController@store')->name('dashboard.student.personal.info.save');
+    Route::put('/personal-information', 'App\Http\Controllers\StudentPersonalInfoController@update')->name('dashboard.student.personal.info.update');
+    Route::get('/add-institution', 'App\Http\Controllers\StudentAddInstitutionController@index')->name('dashboard.student.add.institution');
+    Route::post('/add-institution', 'App\Http\Controllers\StudentAddInstitutionController@store')->name('dashboard.student.add.institution.save');
+    Route::put('/add-institution', 'App\Http\Controllers\StudentAddInstitutionController@edit')->name('dashboard.student.add.institution.update');
+    Route::get('/add-area', 'App\Http\Controllers\StudentAddAreaController@index')->name('dashboard.student.add.area');
+    Route::post('/add-area', 'App\Http\Controllers\StudentAddAreaController@store')->name('dashboard.student.add.area.save');
+    Route::put('/add-area', 'App\Http\Controllers\StudentAddAreaController@edit')->name('dashboard.student.add.area.update');
+    Route::get('/add-document', 'App\Http\Controllers\StudentAddDocumentController@index')->name('dashboard.student.add.document');
+    Route::post('/add-document', 'App\Http\Controllers\StudentAddDocumentController@store')->name('dashboard.student.add.document.save');
+    Route::put('/add-document', 'App\Http\Controllers\StudentAddDocumentController@edit')->name('dashboard.student.add.document.update');
+    Route::get('/recommendation-letter', 'App\Http\Controllers\StudentRecommendationLetterController@index')->name('dashboard.student.recommentation.letter');
+    Route::get('/schedule-interview', 'App\Http\Controllers\StudentScheduleInterviewController@index')->name('dashboard.student.schedule.interview');
+    Route::post('/schedule-interview', 'App\Http\Controllers\StudentScheduleInterviewController@store')->name('dashboard.student.schedule.interview.save');
+    Route::put('/schedule-interview', 'App\Http\Controllers\StudentScheduleInterviewController@edit')->name('dashboard.student.schedule.interview.update');
 });
 
 Route::prefix('collaborator')->group(function() {
     // externo
-    Route::get('/login', 'Auth\CollaboratorLoginController@index')->name('login.collaborator');
-    Route::post('/login', 'Auth\CollaboratorLoginController@login')->name('login.collaborator.save');
-    Route::get('/logout', 'Auth\CollaboratorLoginController@logout')->name('logout.collaborator');
-    Route::get('/forgot-password', 'Auth\CollaboratorLoginController@formForgotPassword')->name('forgotPassword.collaborator'); // formulário de esqueceu a senha
-    Route::post('/forgot-password', 'Auth\CollaboratorLoginController@submitForgotPassword')->name('forgotPassword.collaborator.submit'); // envia um email com o token de verificação
-    Route::get('/register', 'Auth\CollaboratorLoginController@formRegister')->name('register.collaborator'); // formulário de novo colaborador
-    Route::post('/register', 'Auth\CollaboratorLoginController@submitRegister')->name('register.collaborator.submit'); // adicioanr novo colaborador
+    Route::get('/login', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'index'])->name('login.collaborator');
+    Route::post('/login', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'login'])->name('login.collaborator.submit');
+    Route::get('/logout', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'logout'])->name('logout.collaborator');
+    Route::get('/forgot-password', [App\Http\Controllers\Auth\CollaboratorForgotPasswordController::class, 'index'])->name('forgotPassword.collaborator'); // formulário de esqueceu a senha
+    Route::post('/forgot-password', [App\Http\Controllers\Auth\CollaboratorForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.collaborator.submit'); // envia um email com o token de verificação
+    Route::get('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'index'])->name('resetPassword.collaborator'); // formulário de esqueceu a senha
+    Route::post('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'reset'])->name('resetPassword.collaborator.submit'); // envia um email com o token de verificação
+    Route::get('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'index'])->name('register.collaborator'); // formulário de novo colaborador
+    Route::post('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'store'])->name('register.collaborator.submit'); // adicioanr novo colaborador
     // interno
-    Route::get('/', 'Auth\CollaboratorController@index')->name('dashboard.collaborator');
-    Route::get('/redefine-password', 'Auth\CollaboratorController@redefine_password')->name('dashboard.collaborator.redefine.password');
-    Route::get('/redefine-password', 'Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
-    Route::post('/redefine-password', 'Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
-    Route::get('/personal-information', 'Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');
-    Route::post('/personal-information', 'Auth\CollaboratorController@personalInfoSave')->name('dashboard.collaborator.personal.info.save');
-    Route::put('/personal-information', 'Auth\CollaboratorController@personalInfoUpdate')->name('dashboard.collaborator.personal.info.update');
-    
-    Route::get('/collaborators', 'Auth\CollaboratorController@listCollaborators')->name('dashboard.collaborator.list');
+    Route::get('', [App\Http\Controllers\Auth\CollaboratorController::class, 'index'])->name('dashboard.collaborator');
+    Route::get('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
+    Route::post('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
+    Route::get('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');
+    Route::post('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@submitPersonalInfo')->name('dashboard.collaborator.personal.info.save');
+    Route::put('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@personalInfoUpdate')->name('dashboard.collaborator.personal.info.update');
+    Route::get('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@formRecommendationLetter')->name('dashboard.collaborator.recommandation.letter');
+    Route::post('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@submitRecommendationLetter')->name('dashboard.collaborator.recommandation.letter.save');
 
-    Route::get('/{:id}/personal-information', 'Auth\CollaboratorController@formCollaboratorPersonalInfo')->name('dashboard.collaborator.collaborator.personal.info');
-    Route::put('/{:id}/personal-information', 'Auth\CollaboratorController@collaboratorPersonalInfoUpdate')->name('dashboard.collaborator.collaborator.personal.info.update');
-    Route::put('/{:id}/nivel', 'Auth\CollaboratorController@collaboratorNivelUpdate')->name('dashboard.collaborator.collaborator.nivel.update');
-    Route::delete('/{:id}', 'Auth\CollaboratorController@collaboratorsDelete')->name('dashboard.collaborator.collaborator.delete');
-    Route::get('/recommendation-letter', 'Auth\CollaboratorController@formRecommendationLetter')->name('dashboard.collaborator.recommandation.letter');
-    Route::post('/recommendation-letter', 'Auth\CollaboratorController@recommendationLetterSave')->name('dashboard.collaborator.recommandation.letter.save');
+    Route::get('/exam', 'App\Http\Controllers\CollaboratorExamController@index')->name('dashboard.collaborator.exam');
+    Route::get('/new-exam', 'App\Http\Controllers\CollaboratorExamController@formNewExam')->name('dashboard.collaborator.new.exam');
+    Route::post('/new-exam', 'App\Http\Controllers\CollaboratorExamController@submitNewExam')->name('dashboard.collaborator.new.exam.save');
+    Route::put('/new-exam', 'App\Http\Controllers\CollaboratorExamController@newExamUpdate')->name('dashboard.collaborator.new.exam.update');
+    Route::get('/previous-exam', 'App\Http\Controllers\CollaboratorExamController@formPreviousExam')->name('dashboard.collaborator.previous.exam');
     
-    Route::get('/students', 'Auth\CollaboratorController@listStudents')->name('dashboard.collaborator.students');
+    Route::get('/collaborators', 'App\Http\Controllers\CollaboratorCollaboratorsController@index')->name('dashboard.collaborator.list');
+    Route::get('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorCollaboratorsController@formCollaboratorPersonalInfo')->name('dashboard.collaborator.collaborator.personal.info');
+    Route::put('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorPersonalInfoUpdate')->name('dashboard.collaborator.collaborator.personal.info.update');
+    Route::put('/{:id}/nivel', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorNivelUpdate')->name('dashboard.collaborator.collaborator.nivel.update');
+    Route::delete('/{:id}', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorsDelete')->name('dashboard.collaborator.collaborator.delete');
+    
+    Route::get('/students', 'App\Http\Controllers\CollaboratorStudentsController@index')->name('dashboard.collaborator.students');
     
     Route::prefix('student')->group(function () {
-        Route::get('/{:id}/personal-information', 'Auth\CollaboratorController@formStudentPersonalInformation')->name('dashboard.collaborator.student.personal-info');
-        Route::put('/{:id}/personal-information', 'Auth\CollaboratorController@studentPersonalInformationUpdate')->name('dashboard.collaborator.student.personal.info.update');
-        Route::get('/{:id}/institution', 'Auth\CollaboratorController@formStudentInstituition')->name('dashboard.collaborator.students.institution');
-        Route::put('/{:id}/institution', 'Auth\CollaboratorController@studentInstituitionUpdate')->name('dashboard.collaborator.students.institution.update');
-        Route::get('/{:id}/area', 'Auth\CollaboratorController@formStudentArea')->name('dashboard.collaborator.students.area');
-        Route::update('/{:id}/area', 'Auth\CollaboratorController@studentAreaUpdate')->name('dashboard.collaborator.students.area.update');
-        Route::get('/{:id}/document', 'Auth\CollaboratorController@formStudentDocument')->name('dashboard.collaborator.student.document');
-        Route::put('/{:id}/document', 'Auth\CollaboratorController@studentDocumentUpdate')->name('dashboard.collaborator.student.document.update');
-        Route::get('/{:id}/recommnedation-letter', 'Auth\CollaboratorController@formStudentRecommendationLetter')->name('dashboard.collaborator.student.document');
-        Route::put('/{:id}/recommendation-letter', 'Auth\CollaboratorController@studentRecommendationLetterUpdate')->name('dashboard.collaborator.student.document.update'); 
-        Route::delete('/{:id}', 'Auth\CollaboratorController@studentDelete')->name('dashboard.collaborator.student');
+        Route::get('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorStudentsController@formStudentPersonalInformation')->name('dashboard.collaborator.student.personal-info');
+        Route::put('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorStudentsController@studentPersonalInformationUpdate')->name('dashboard.collaborator.student.personal.info.update');
+        Route::get('/{:id}/institution', 'App\Http\Controllers\CollaboratorStudentsController@formStudentInstituition')->name('dashboard.collaborator.students.institution');
+        Route::put('/{:id}/institution', 'App\Http\Controllers\CollaboratorStudentsController@studentInstituitionUpdate')->name('dashboard.collaborator.students.institution.update');
+        Route::get('/{:id}/area', 'App\Http\Controllers\CollaboratorStudentsController@formStudentArea')->name('dashboard.collaborator.students.area');
+        Route::put('/{:id}/area', 'App\Http\Controllers\CollaboratorStudentsController@studentAreaUpdate')->name('dashboard.collaborator.students.area.update');
+        Route::get('/{:id}/document', 'App\Http\Controllers\CollaboratorStudentsController@formStudentDocument')->name('dashboard.collaborator.student.document');
+        Route::put('/{:id}/document', 'App\Http\Controllers\CollaboratorStudentsController@studentDocumentUpdate')->name('dashboard.collaborator.student.document.update');
+        Route::get('/{:id}/recommnedation-letter', 'App\Http\Controllers\CollaboratorStudentsController@formStudentRecommendationLetter')->name('dashboard.collaborator.student.document');
+        Route::put('/{:id}/recommendation-letter', 'App\Http\Controllers\CollaboratorStudentsController@studentRecommendationLetterUpdate')->name('dashboard.collaborator.student.document.update'); 
+        Route::delete('/{:id}', 'App\Http\Controllers\CollaboratorStudentsController@studentDelete')->name('dashboard.collaborator.student');
     });
     
+    Route::prefix('relatorio')->group(function () {
+        Route::get('/1', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio1');
+        Route::get('/2', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio2');
+        Route::get('/3', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio3');
+        Route::get('/4', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio4');
+        Route::get('/5', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio5');
+        Route::get('/6', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio6');
+        Route::get('/7', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio7');
+        Route::get('/8', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio8');
+        Route::get('/9', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio9');
+        Route::post('/1', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio1');
+        Route::post('/2', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio2');
+        Route::post('/3', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio3');
+        Route::post('/4', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio4');
+        Route::post('/5', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio5');
+        Route::post('/6', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio6');
+        Route::post('/7', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio7');
+        Route::post('/8', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio8');
+        Route::post('/9', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio9');
+    });
 });
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

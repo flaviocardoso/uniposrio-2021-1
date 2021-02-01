@@ -24,7 +24,7 @@
       <font face="Arial" font color="#FFFFFF" size="2">Informa&ccedil;&otilde;es Gerais</font></a></span><span style="font-family: 'Arial'; "><font size="2">&nbsp;&nbsp;&nbsp;
       </font></span><font face="Arial">
       <span style="color: black">
-      <a href="/subscribes" title="Registration" style="text-decoration: none; text-underline: single">
+      <a href="/student" title="Registration" style="text-decoration: none; text-underline: single">
       <font face="Arial" font color="#FFFFFF" size="2">Inscri&ccedil;&otilde;es</font></a></span></font><span style="font-family: 'Arial'; "><font size="2">&nbsp;&nbsp;&nbsp;
       </font></span>
       <span style="font-family: 'Arial',serif; color: black">

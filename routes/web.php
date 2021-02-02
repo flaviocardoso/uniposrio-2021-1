@@ -25,6 +25,7 @@ Route::get('/recommendation-letter', function () {
 });
 Route::get('/credits', [App\Http\Controllers\CreditsController::class, 'index']);
 
+/*
 Route::prefix('student')->group(function() {
     // esterno
     Route::get('/login', [App\Http\Controllers\Auth\StudentLoginController::class, 'index'])->name('login.student'); // formulário de login
@@ -34,6 +35,9 @@ Route::prefix('student')->group(function() {
     Route::post('/forgot-password', [App\Http\Controllers\Auth\StudentForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.student.submit'); // envia um email com o token de verificação
     Route::get('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'index'])->name('resetPassword.student'); // formulário de esqueceu a senha
     Route::post('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'reset'])->name('resetPassword.student.submit'); // envia um email com o token de verificação
+    Route::get('/verify', [App\Http\Controllers\Auth\StudentVerificationController::class, 'index'])->name('verification.student'); // formulário de novo estudante
+    Route::get('/verify/{id}/{hash}', [App\Http\Controllers\Auth\StudentVerificationController::class, 'verify'])->name('verification.student.verify'); // formulário de novo estudante
+    Route::post('/verify', [App\Http\Controllers\Auth\StudentVerificationController::class, 'resend'])->name('verification.student.resend'); // formulário de novo estudante
     Route::get('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'index'])->name('register.student'); // formulário de novo estudante
     Route::post('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'store'])->name('register.student.submit'); // adicioanr novo student
     // interno
@@ -68,6 +72,9 @@ Route::prefix('collaborator')->group(function() {
     Route::post('/forgot-password', [App\Http\Controllers\Auth\CollaboratorForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.collaborator.submit'); // envia um email com o token de verificação
     Route::get('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'index'])->name('resetPassword.collaborator'); // formulário de esqueceu a senha
     Route::post('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'reset'])->name('resetPassword.collaborator.submit'); // envia um email com o token de verificação
+    Route::get('/verify', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'index'])->name('verification.collaborator'); // formulário de novo estudante
+    Route::get('/verify/{id}/{hash}', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'verify'])->name('verification.collaborator.verify'); // formulário de novo estudante
+    Route::post('/verify', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'resend'])->name('verification.collaborator.resend'); // formulário de novo estudante
     Route::get('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'index'])->name('register.collaborator'); // formulário de novo colaborador
     Route::post('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'store'])->name('register.collaborator.submit'); // adicioanr novo colaborador
     // interno
@@ -129,6 +136,8 @@ Route::prefix('collaborator')->group(function() {
         Route::post('/9', 'App\Http\Controllers\CollaboratorRelatorioController@submitRelatorio9');
     });
 });
-// Auth::routes();
+
+// Auth::routes(['verifity' => true]);
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+*/

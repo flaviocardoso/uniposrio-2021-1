@@ -10,7 +10,9 @@ class CollaboratorController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('authcollaborator');
+        $this->middleware('auth.collaborator');
+        $this->middleware('verified.collaborator');
+        $this->middleware('password.confirm.collaborator');
     }
 
     public function index()

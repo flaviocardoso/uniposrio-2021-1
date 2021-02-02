@@ -10,12 +10,14 @@ class StudentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('authstudent');
+        $this->middleware('auth.student');
+        $this->middleware('verified.student');
+        $this->middleware('password.confirm.student');
     }
 
     public function index()
     {
-        $students = Student::select('name', 'email')->get();
+        $students = Student::select('name', 'email', 'email_verified_at')->get();
         return view('discente.index', compact('students'));
     }
 

@@ -18,10 +18,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable; //
 class Collaborator extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
-    CanResetPasswordContract,
-    MustVerifyEmail
+    CanResetPasswordContract
 {
-    use HasFactory, Notifiable, Authenticatable, Authorizable, MustVerifyEmail, CanResetPassword, CollaboratorVerifyEmail;
+    use HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, CollaboratorVerifyEmail;
 
     protected $guard = 'collaborator';
 

@@ -20,7 +20,7 @@ class Student extends Model implements
     AuthorizableContract,
     CanResetPasswordContract
 {
-    use HasFactory, Notifiable, Authenticatable, Authorizable, MustVerifyEmail, CanResetPassword, StudentVerifyEmail;
+    use HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, StudentVerifyEmail;
 
     protected $guard = 'student';
 

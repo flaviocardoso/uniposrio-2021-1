@@ -3,6 +3,9 @@
 @section('content')
 <div align="center">
 <div>
+    @if (session('verified'))
+    <p>Verifique o email para ativação</p>
+    @endif
     @if (Auth::guard('student'))
     <p>dashboard student</p>
     <p>{{ Auth::guard('student')->user()->id }} - {{ Auth::guard('student')->user()->user }}</p>
@@ -16,6 +19,7 @@
     <div class="row">
         <div class="col">{{ $student->name }}</div>
         <div class="col">{{ $student->email }}</div>
+        <div class="col">{{ $student['email_verified_at'] }}</div>
     </div>
     @endforeach
     @endif

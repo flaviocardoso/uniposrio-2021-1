@@ -19,7 +19,7 @@ trait Verification
      */
     public function index(Request $request)
     {
-        return $request->user()->hasVerifiedEmail()
+        return $request->user($this->guard)->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
                         : view('authorization.verify');
     }
@@ -34,22 +34,22 @@ trait Verification
      */
     public function verify(Request $request)
     {
-        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+        if (! hash_equals((string) $request->route('id'), (string) $request->user($this->guard)->getKey())) {
             throw new AuthorizationException;
         }
 
-        if (! hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
+        if (! hash_equals((string) $request->route('hash'), sha1($request->user($this->guard)->getEmailForVerification()))) {
             throw new AuthorizationException();
         }
 
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user($this->guard)->hasVerifiedEmail()) {
             return $request->wantsJson()
                         ? new JsonResponse([], 204)
                         : redirect($this->redirectPath());
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($request->user($this->guard)->markEmailAsVerified()) {
+            event(new Verified($request->user($this->guard)));
         }
 
         if ($response = $this->verified($request)) {
@@ -80,13 +80,13 @@ trait Verification
      */
     public function resend(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user($this->guard)->hasVerifiedEmail()) {
             return $request->wantsJson()
                         ? new JsonResponse([], 204)
                         : redirect($this->redirectPath());
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $request->user($this->guard)->sendEmailVerificationNotification();
 
         return $request->wantsJson()
                     ? new JsonResponse([], 202)

@@ -1,23 +1,31 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [App\Http\Controllers\Auth\StudentLoginController::class, 'index'])->name('login.student'); // formulário de login
-Route::post('/login', [App\Http\Controllers\Auth\StudentLoginController::class, 'login'])->name('login.student.submit'); // login
-Route::get('/logout', [App\Http\Controllers\Auth\StudentLoginController::class, 'logout'])->name('logout.student'); // logout
-Route::get('/forgot-password', [App\Http\Controllers\Auth\StudentForgotPasswordController::class, 'index'])->name('forgotPassword.student'); // formulário de esqueceu a senha
-Route::post('/forgot-password', [App\Http\Controllers\Auth\StudentForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.student.submit'); // envia um email com o token de verificação
-Route::get('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'index'])->name('resetPassword.student'); // formulário de esqueceu a senha
-Route::post('/reset-password', [App\Http\Controllers\Auth\StudentResetPasswordController::class, 'reset'])->name('resetPassword.student.submit'); // envia um email com o token de verificação
-Route::get('/verify', [App\Http\Controllers\Auth\StudentVerificationController::class, 'index'])->name('verification.student'); // formulário de novo estudante
-Route::get('/verify/{id}/{hash}', [App\Http\Controllers\Auth\StudentVerificationController::class, 'verify'])->name('verification.student.verify'); // formulário de novo estudante
-Route::post('/verify', [App\Http\Controllers\Auth\StudentVerificationController::class, 'resend'])->name('verification.student.resend'); // formulário de novo estudante
-Route::get('/confirm', [App\Http\Controllers\Auth\StudentConfirmPasswordController::class, 'index'])->name('confirm.student'); // formulário de novo colaborador
-Route::post('/confirm', [App\Http\Controllers\Auth\StudentConfirmPasswordController::class, 'confirm'])->name('confirm.student'); // formulário de novo colaborador
-Route::get('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'index'])->name('register.student'); // formulário de novo estudante
-Route::post('/register', [App\Http\Controllers\Auth\StudentRegisterController::class, 'store'])->name('register.student.submit'); // adicioanr novo student
+
+// Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+// Auth::guard('student');
+// Route::middleware('auth:student')->group(function() {
+//     Route::get('', 'DashBoardController@index')->name('dashboard');
+// });
+
+Route::get('/login', 'Auth\LoginController@index')->name('login'); // formulário de login
+Route::post('/login', 'Auth\LoginController@login')->name('login.submit'); // login
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout'); // logout
+Route::get('/forgot-password', 'Auth\ForgotPasswordController@index')->name('forgotPassword'); // formulário de esqueceu a senha
+Route::post('/forgot-password', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('forgotPassword.submit'); // envia um email com o token de verificação
+Route::get('/reset-password', 'Auth\ResetPasswordController@index')->name('resetPassword'); // formulário de esqueceu a senha
+Route::post('/reset-password', 'Auth\ResetPasswordController@reset')->name('resetPassword.submit'); // envia um email com o token de verificação
+Route::get('/verify', 'Auth\VerificationController@index')->name('verify'); // formulário de novo estudante
+Route::get('/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verify.submit'); // formulário de novo estudante
+Route::post('/verify', 'Auth\VerificationController@resend')->name('verify.resend'); // formulário de novo estudante
+Route::get('/confirm', 'Auth\ConfirmPasswordController@index')->name('confirm'); // formulário de novo colaborador
+Route::post('/confirm', 'Auth\ConfirmPasswordController@confirm')->name('confirm.submit'); // formulário de novo colaborador
+Route::get('/register', 'Auth\RegisterController@index')->name('register'); // formulário de novo estudante
+Route::post('/register', 'Auth\RegisterController@store')->name('register.submit'); // adicioanr novo student
 // interno
-Route::get('/', [App\Http\Controllers\Auth\StudentController::class, 'index'])->name('dashboard.student'); // verifica se já está registrado no exam
+Route::get('/', 'DashBoardController@index')->name('dashboard'); // verifica se já está registrado no exam
 Route::post('/register-exam', 'App\Http\Controllers\Auth\StudentController@registerExam')->name('dashboard.student.register.exam'); // registrar para o exam
 Route::get('/redefine-password', 'App\Http\Controllers\Auth\StudentController@formRedefinePassword')->name('dashboard.student.redefine.password'); // formulário de redefinir senha
 Route::post('/redefine-password', 'App\Http\Controllers\Auth\StudentController@submitRedefinePassword')->name('dashboard.student.redefine.password.submit'); // salvar uma nova senha

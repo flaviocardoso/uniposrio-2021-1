@@ -8,19 +8,23 @@ use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Auth\Authenticatable; //
 use Illuminate\Auth\MustVerifyEmail; //
-use App\Notifications\CanResetPassword;
+// use App\Notifications\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use App\Contracts\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+// use App\Contracts\CanResetPassword as CanResetPasswordContract;
 use App\Traits\CollaboratorVerifyEmail;
 use Illuminate\Foundation\Auth\Access\Authorizable; //
 
 class Collaborator extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
-    CanResetPasswordContract
+    CanResetPasswordContract,
+    MustVerifyEmailContract
 {
-    use HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, CollaboratorVerifyEmail;
+    use HasFactory, Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
 
     protected $guard = 'collaborator';
 

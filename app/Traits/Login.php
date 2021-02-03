@@ -65,8 +65,8 @@ trait Login
         $credencials1 = $request->only('email', 'password');
         $credencials2 = ['user' => $request->email, 'password' => $request->password];
 
-        if (    $this->guard()->attempt($credencials1) 
-            ||  $this->guard()->attempt($credencials2)) {
+        if (    $this->guard()->attempt($credencials1, $request->filled('remember')) 
+            ||  $this->guard()->attempt($credencials2, $request->filled('remember'))) {
                 $request->session()->regenerate();
                 $this->guardLogouts();
                 return $this->redirectSucess($request);

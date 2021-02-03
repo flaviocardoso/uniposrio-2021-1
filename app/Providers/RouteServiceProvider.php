@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     /**
      * The controller namespace for the application.
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -49,12 +49,14 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::prefix('student')
                 ->middleware('student')
-                ->namespace($this->namespace)
+                ->name('student.')
+                ->namespace($this->namespace . '\\Student')
                 ->group(base_path('routes/student.php'));
 
             Route::prefix('collaborator')
                 ->middleware('collaborator')
-                ->namespace($this->namespace)
+                ->name('collaborator.')
+                ->namespace($this->namespace . '\\Collaborator')
                 ->group(base_path('routes/collaborator.php'));
         });
     }

@@ -2,22 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'index'])->name('login.collaborator');
-Route::post('/login', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'login'])->name('login.collaborator.submit');
-Route::get('/logout', [App\Http\Controllers\Auth\CollaboratorLoginController::class, 'logout'])->name('logout.collaborator');
-Route::get('/forgot-password', [App\Http\Controllers\Auth\CollaboratorForgotPasswordController::class, 'index'])->name('forgotPassword.collaborator'); // formulário de esqueceu a senha
-Route::post('/forgot-password', [App\Http\Controllers\Auth\CollaboratorForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgotPassword.collaborator.submit'); // envia um email com o token de verificação
-Route::get('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'index'])->name('resetPassword.collaborator'); // formulário de esqueceu a senha
-Route::post('/reset-password', [App\Http\Controllers\Auth\CollaboratorResetPasswordController::class, 'reset'])->name('resetPassword.collaborator.submit'); // envia um email com o token de verificação
-Route::get('/verify', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'index'])->name('verification.collaborator'); // formulário de novo estudante
-Route::get('/verify/{id}/{hash}', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'verify'])->name('verification.collaborator.verify'); // formulário de novo estudante
-Route::post('/verify', [App\Http\Controllers\Auth\CollaboratorVerificationController::class, 'resend'])->name('verification.collaborator.resend'); // formulário de novo estudante
-Route::get('/confirm', [App\Http\Controllers\Auth\CollaboratorConfirmPasswordController::class, 'index'])->name('confirm.collaborator'); // formulário de novo colaborador
-Route::post('/confirm', [App\Http\Controllers\Auth\CollaboratorConfirmPasswordController::class, 'confirm'])->name('confirm.collaborator'); // formulário de novo colaborador
-Route::get('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'index'])->name('register.collaborator'); // formulário de novo colaborador
-Route::post('/register', [App\Http\Controllers\Auth\CollaboratorRegisterController::class, 'store'])->name('register.collaborator.submit'); // adicioanr novo colaborador
+// Route::get('/login', 'LoginController@showLoginForm')->name('login');
+
+// Route::middleware('auth:collaborator')->group(function() {
+//     Route::get('', 'DashBoardController@index')->name('dashboard');
+// });
+
+Route::get('/login', 'Auth\LoginController@index')->name('login');
+Route::post('/login', 'Auth\LoginController@login')->name('login.submit');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/forgot-password', 'Auth\ForgotPasswordController@index')->name('forgotPassword'); // formulário de esqueceu a senha
+Route::post('/forgot-password', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('forgotPassword.submit'); // envia um email com o token de verificação
+Route::get('/reset-password', 'Auth\ResetPasswordController@index')->name('resetPassword'); // formulário de esqueceu a senha
+Route::post('/reset-password', 'Auth\ResetPasswordController@reset')->name('resetPassword.submit'); // envia um email com o token de verificação
+Route::get('/verify', 'Auth\VerificationController@index')->name('verify'); // formulário de novo estudante
+Route::get('/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verify.submit'); // formulário de novo estudante
+Route::post('/verify', 'Auth\VerificationController@resend')->name('verify.resend'); // formulário de novo estudante
+Route::get('/confirm', 'Auth\ConfirmPasswordController@index')->name('confirm'); // formulário de novo colaborador
+Route::post('/confirm', 'Auth\ConfirmPasswordController@confirm')->name('confirm.submit'); // formulário de novo colaborador
+Route::get('/register', 'Auth\RegisterController@index')->name('register'); // formulário de novo colaborador
+Route::post('/register', 'Auth\RegisterController@store')->name('register.submit'); // adicioanr novo colaborador
 // interno
-Route::get('', [App\Http\Controllers\Auth\CollaboratorController::class, 'index'])->name('dashboard.collaborator');
+Route::get('', 'DashBoardController@index')->name('dashboard');
 Route::get('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
 Route::post('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
 Route::get('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');

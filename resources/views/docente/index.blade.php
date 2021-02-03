@@ -3,9 +3,9 @@
 @section('content')
 <div align="center">
 <div>
-    <p>dashboard collaborator</p>
+    <p>dashboard collaborator {{ Auth::guard('collaborator')->user()->user }}</p>
     <p>
-        <a href="{{ route('logout.collaborator') }}" class="btn btn-secondary mt-3">
+        <a href="{{ route('collaborator.logout') }}" class="btn btn-secondary mt-3">
             Logout
         </a>
     </p>
@@ -14,6 +14,7 @@
     <div class="row">
         <div class="col">{{ $collaborator->name }}</div>
         <div class="col">{{ $collaborator->email }}</div>
+        <div class="col">{{ $collaborator->email_verified_at }}</div>
     </div>
     @endforeach
 </div>

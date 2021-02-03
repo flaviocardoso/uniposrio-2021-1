@@ -36,25 +36,37 @@ Login Collaborator
             @endif
         </div>
 
+        <div class="form-group row">
+            <div class="col-md-6 offset-md-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                    <label class="form-check-label" for="remember">
+                        {{ __('Remember Me') }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-primary mt-3">
             Entrar
         </button>
 
         <a href="
-                @if (Route::is('login.student'))
-                {{ route('register.student') }}
-                @elseif (Route::is('login.collaborator'))
-                {{ route('register.collaborator') }}
+                @if (Route::is('student.login'))
+                {{ route('student.register') }}
+                @elseif (Route::is('collaborator.login'))
+                {{ route('collaborator.register') }}
                 @endif
         " class="btn btn-secondary mt-3">
             Registrar-se
         </a>
-        @if (Route::has('forgotPassword.student') || Route::has('forgotPassword.collaborator'))
+        @if (Route::has('student.forgotPassword') || Route::has('collaborator.forgotPassword'))
             <a class="btn btn-link" href="
-                @if (Route::is('login.student'))
-                {{ route('forgotPassword.student') }}
-                @elseif (Route::is('login.collaborator'))
-                {{ route('forgotPassword.collaborator') }}
+                @if (Route::is('student.login'))
+                {{ route('student.forgotPassword') }}
+                @elseif (Route::is('collaborator.login'))
+                {{ route('collaborator.forgotPassword') }}
                 @endif
             "
             >

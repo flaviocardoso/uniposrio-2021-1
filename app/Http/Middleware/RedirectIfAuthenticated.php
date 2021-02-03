@@ -27,13 +27,13 @@ class RedirectIfAuthenticated
             // }
             
             if ($guard == 'admin' && Auth::guard($guard)->check()) 
-                    return redirect()->route('dashboard.admin');
+                    return redirect()->route('admin.dashboard');
         
             if ($guard == 'collaborator' && Auth::guard($guard)->check())
-                    return redirect()->route('dashboard.collaborator');
+                    return redirect()->route('collaborator.dashboard');
         
             if ($guard == 'student' && Auth::guard($guard)->check())
-                    return redirect()->route('dashboard.student');
+                    return redirect()->route('student.dashboard');
         }
 
         return $next($request);

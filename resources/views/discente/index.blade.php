@@ -10,7 +10,7 @@
     <p>dashboard student</p>
     <p>{{ Auth::guard('student')->user()->id }} - {{ Auth::guard('student')->user()->user }}</p>
     <p>
-        <a href="{{ route('logout.student') }}" class="btn btn-secondary mt-3">
+        <a href="{{ route('student.logout') }}" class="btn btn-secondary mt-3">
             Logout
         </a>
     </p>

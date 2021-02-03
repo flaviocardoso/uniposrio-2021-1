@@ -1,9 +1,10 @@
 <?php
 namespace App\Traits;
 
-use App\Facades\Password;
+// use App\Facades\Password;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 trait ForgotPassword
@@ -18,7 +19,7 @@ trait ForgotPassword
     {
         $this->validateEmail($request);
         $response = Password::broker($this->base)->sendResetLink(
-            $this->credentials($request), null, $this->base
+            $this->credentials($request)
         );
         return $response == Password::RESET_LINK_SENT
                     ? $this->sendResetLinkResponse($request, $response)

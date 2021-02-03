@@ -1,13 +1,14 @@
 <?php
 namespace App\Traits;
 
-use App\Facades\Password;
+// use App\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -99,7 +100,7 @@ trait ResetPassword
                     ->withErrors(['email' => trans($response)]);
     }
 
-    public function broker()
+    protected function broker()
     {
         return Password::broker($this->base);
     }

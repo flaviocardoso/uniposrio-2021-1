@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Casts\Json;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ParticipationInstituion extends Model
+class PassingScore extends Model
 {
-    public $timestamps = false;
+    use HasFactory;
 
-    protected $fillable = ['module', 'instituions'];
+    protected $fillable = ['period_id', 'collaborator_id', 'module', 'instituions'];
 
     protected $casts = [
         'instituions' => 'array'
@@ -23,7 +23,8 @@ class ParticipationInstituion extends Model
             if ($item['sigla'] && $item['nome']) {
                 $instituions[] = [
                     'sigla' => $item['sigla'],
-                    'nome' => $item['nome']
+                    'nome' => $item['nome'],
+                    'nota' => $item['nota']
                 ];
             }
         }

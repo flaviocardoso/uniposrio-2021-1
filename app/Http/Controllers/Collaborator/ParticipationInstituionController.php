@@ -11,16 +11,12 @@ class ParticipationInstituionController extends Controller
     public function index()
     {
         $participation_instituions = ParticipationInstituion::all();
-        // var_dump($participation_instituions);
-        // exit;
         return view('docente.participation_instituion', compact('participation_instituions'));
     }
 
     public function showFormUpdate(int $id)
     {
         $participation_instituion = ParticipationInstituion::find($id);
-        // var_dump($participation_instituion);
-        // exit;
         return view('docente.participation_instituion_update', compact('participation_instituion'));
     }
 

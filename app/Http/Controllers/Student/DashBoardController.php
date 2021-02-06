@@ -23,7 +23,7 @@ class DashBoardController extends Controller
 
     public function registerExam()
     {
-        //
+        return view('discente.registration-data');
     }
 
     public function formRedefinePassword()

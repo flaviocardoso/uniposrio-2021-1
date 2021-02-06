@@ -25,8 +25,8 @@
         <select name="discente[categoria]" class="formElement" required>
           <option value="">Selelecione Mestrado/Doutorado</option>
 		  
-				<option value="M" <?=$selected1?>>Mestrado</option>
-				<option value="D" <?=$selected2?>>Doutorado</option>
+				<option value="M" >Mestrado</option>
+				<option value="D" >Doutorado</option>
 			
         </select>
       </span>
@@ -64,11 +64,7 @@
 <p><span class="formElement" aria-label="Pais/Country">
   <input name="discente[pais_aluno]" type="text" id="discente[pais_aluno]" placeholder="Pais/Country" size="35" value="" list="list_paises" autocomplete="off" required></span>
   <datalist id="list_paises">
-  <?php
-	foreach($array_paises as $sigla_pais => $nome_pais){
-		echo "<option value='$sigla_pais'>$nome_pais</option>";
-	}
-  ?>
+  
   </datalist>
 </p>
 <p><span class="formElement" aria-label="C.E.P./Zip code">

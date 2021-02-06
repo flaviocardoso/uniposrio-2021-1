@@ -1,6 +1,7 @@
 @extends('layout.layout')
 
 @section('content')
+<!-- não é inscrição é só login -->
 <div align="center">
     <form action="" method="post" enctype="multipart/form-data">
         <table border="0" cellspacing="5">

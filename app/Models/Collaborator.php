@@ -8,14 +8,11 @@ use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Auth\Authenticatable; //
 use Illuminate\Auth\MustVerifyEmail; //
-// use App\Notifications\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-// use App\Contracts\CanResetPassword as CanResetPasswordContract;
-use App\Traits\CollaboratorVerifyEmail;
 use Illuminate\Foundation\Auth\Access\Authorizable; //
 
 class Collaborator extends Model implements
@@ -38,6 +35,10 @@ class Collaborator extends Model implements
     protected $hidden = [
         'password',
         'remember_token'
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
 }

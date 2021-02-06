@@ -1,7 +1,7 @@
 @extends('layout.layout')
 
 @section('content')
-
+<!-- Inscrição para o exame -->
             <fieldset style="background:rgba(255,255,255,0.3);"><h1 align="center"><?php echo $resultadoExame['ano_insc']; ?>/<?php echo $resultadoExame['semestre_insc']; ?></h1></fieldset>
             <form action="" method="post" enctype="multipart/form-data">
             <table width="100%" border="0" cellpadding="10" cellspacing="5">

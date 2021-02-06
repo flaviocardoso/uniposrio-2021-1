@@ -26,7 +26,7 @@ Route::get('/register', 'Auth\RegisterController@index')->name('register'); // f
 Route::post('/register', 'Auth\RegisterController@store')->name('register.submit'); // adicioanr novo student
 // interno
 Route::get('/', 'DashBoardController@index')->name('dashboard'); // verifica se já está registrado no exam
-Route::post('/register-exam', 'App\Http\Controllers\Auth\StudentController@registerExam')->name('dashboard.student.register.exam'); // registrar para o exam
+Route::get('/register-exam', 'DashBoardController@registerExam')->name('dashboard.register.exam'); // registrar para o exam
 Route::get('/redefine-password', 'App\Http\Controllers\Auth\StudentController@formRedefinePassword')->name('dashboard.student.redefine.password'); // formulário de redefinir senha
 Route::post('/redefine-password', 'App\Http\Controllers\Auth\StudentController@submitRedefinePassword')->name('dashboard.student.redefine.password.submit'); // salvar uma nova senha
 Route::get('/personal-information', 'App\Http\Controllers\StudentPersonalInfoController@index')->name('dashboard.student.personal.info');

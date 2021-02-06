@@ -11,10 +11,10 @@ class ConfirmPasswordController extends Controller
     use ConfirmPassword;
 
     protected $redirectTo = '/collaborator';
-    protected $base = 'collaborators';
+    protected $base = 'collaborator';
 
     public function __construct()
     {
-        $this->middleware('auth.collaborator:collaboraotor');
+        $this->middleware('auth:collaborator');
     }
 }

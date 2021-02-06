@@ -56,7 +56,7 @@
         <input type="hidden" name="" value="">
         <input type="number" name="" min="0.00" max="10.00" step="0.01" required value="" size="4">
         </td>
-        <td><td>
+        <td></td>
     </tr>
     
 </table>

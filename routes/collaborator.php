@@ -24,6 +24,9 @@ Route::get('/register', 'Auth\RegisterController@index')->name('register'); // f
 Route::post('/register', 'Auth\RegisterController@store')->name('register.submit'); // adicioanr novo colaborador
 // interno
 Route::get('', 'DashBoardController@index')->name('dashboard');
+Route::get('/participation-instituion', 'ParticipationInstituionController@index')->name('participation.instituion');
+Route::get('/participation-instituion/{id}', 'ParticipationInstituionController@showFormUpdate')->name('participation.instituion.update');
+Route::put('/participation-instituion/{id}', 'ParticipationInstituionController@update')->name('participation.instituion.update');
 Route::get('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
 Route::post('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
 Route::get('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');

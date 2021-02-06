@@ -18,7 +18,7 @@ trait Login
     {
         return $request->wantsJson()
                 ? new JsonResource(['message' => trans('')], 201)
-                : redirect($this->redirectPath());
+                : redirect()->intended($this->redirectPath());
     }
 
     protected function redirectError(Request $request)
@@ -77,9 +77,9 @@ trait Login
     public function logout(Request $request)
     {
         $this->guard()->logout();
-        // $request->session()->invalidate();
-        // $request->session()->regenerateToken();
-        $request->flash();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        // $request->flash();
         // $request->regenerate();
         return $this->redirectSucess($request);
     }

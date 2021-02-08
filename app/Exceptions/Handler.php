@@ -41,6 +41,15 @@ class Handler extends ExceptionHandler
         });
     }
 
+    public function render($request, Throwable $e)
+    {
+        if ($this->isHttpException($e)) {
+            return response()->view('errors.' . $e->getStatusCode(), [], $e->getStatusCode()); // paginas de erro
+        }
+
+        return parent::render($request, $e);
+    }
+
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {

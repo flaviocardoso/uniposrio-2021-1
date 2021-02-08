@@ -36,7 +36,7 @@ Route::get('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorColl
 Route::post('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@submitRecommendationLetter')->name('dashboard.collaborator.recommandation.letter.save');
 
 Route::get('/exam', 'App\Http\Controllers\CollaboratorExamController@index')->name('dashboard.collaborator.exam');
-Route::get('/new-exam', 'App\Http\Controllers\CollaboratorExamController@formNewExam')->name('dashboard.collaborator.new.exam');
+Route::get('/new-exam', 'ExamDataController@showCreateNewExamConfig')->name('dashboard.collaborator.new.exam');
 Route::post('/new-exam', 'App\Http\Controllers\CollaboratorExamController@submitNewExam')->name('dashboard.collaborator.new.exam.save');
 Route::put('/new-exam', 'App\Http\Controllers\CollaboratorExamController@newExamUpdate')->name('dashboard.collaborator.new.exam.update');
 Route::get('/previous-exam', 'App\Http\Controllers\CollaboratorExamController@formPreviousExam')->name('dashboard.collaborator.previous.exam');

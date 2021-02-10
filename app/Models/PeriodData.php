@@ -14,4 +14,14 @@ class PeriodData extends Model
     protected $casts = [
         'active' => 'bollean'
     ];
+
+    public function setActiveAttribute($value)
+    {
+        return $this->attributes['active'] = !!$value;
+    }
+
+    public function getActiveAttribute()
+    {
+        return (boolean) $this->attributes['active'];
+    }
 }

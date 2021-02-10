@@ -1,20 +1,53 @@
 @extends('layout.layout')
 
 @section('content')
-<table>
-<tr>
-<td colspan="2" class="separadorVertical">
+
+<div class="row">
+<div class="col">
 Definições da Prova
-</td>
-</tr>
-<tr><!-- inscrições -->
-<td>
-<label>Data das Inscrições</label>
-</td>
-<td>
-<input name="formDadosDoExame[dt_ini_insc]" type="date" required class="inicio">
-<label>à</label>
-<input name="formDadosDoExame[dt_fim_insc]" type="date" required class="fim"></td>
-</tr>
-</table>
+</div>
+</div>
+<br>
+<div class="row">
+<div class="col">
+Data das Inscrições
+</div>
+</div>
+<br>
+<div class="form-group">
+<div class="row">
+<div class="col-1">
+<label for="startregistrationexam">Início</label>
+</div>
+<div class="col-4">
+<input type="number" name="start" value="{{ $examregistrationconfig->start ?? '' }}" id="startregistrationexam" min="{{ date('Y') }}" max="2100" size="2" class="@error('ano') is-invalid @enderror" required>
+@error('start')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+@enderror
+</div>
+</div>
+<p></p>
+<div class="row">
+<div class="col-1">
+<label for="endregistrationexam">Terminino</label>
+</div>
+<div class="col-4">
+<input type="number" name="end" value="{{ $examregistrationconfig->end ?? '' }}" id="endregistrationexam" min="1" max="2.9" step="0.1" class="@error('semestre') is-invalid @enderror" required>
+@error('end')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+@enderror
+</div>
+</div>
+</div>
+<br>
+<div class="d-flex justify-content-between">
+<a href="{{ route('collaborator.dashboard.new.exam.period') }}" class="btn btn-danger">Anterior</a>
+<button type="button" class="btn btn-primary">Próximo</button>
+</div> 
+</div>
+
 @endsection

@@ -18,7 +18,7 @@ Login Collaborator
         @csrf
         <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" name="email" id="email" required class="form-control @error('name') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            <input type="email" name="email" id="email" required class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @if ($errors->has('email'))
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $errors->first('email') }}</strong>

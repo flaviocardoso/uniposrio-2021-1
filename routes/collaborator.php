@@ -44,16 +44,14 @@ Route::get('/new-exam-registration', 'ExamDataController@createNewRegistrationEx
 Route::post('/new-exam-registration', 'ExamDataController@postNewRegistrationExamConfig')->name('dashboard.new.exam.registration.post');
 Route::get('/new-exam-exam', 'ExamDataController@createNewExamExamConfig')->name('dashboard.new.exam.exam');
 Route::post('/new-exam-exam', 'ExamDataController@postNewExamExamConfig')->name('dashboard.new.exam.exam.post');
-Route::get('/new-exam-solicitation', 'ExamDataController@createNewSolicitationExamConfig')->name('dashboard.new.exam.solicitation');
-Route::post('/new-exam-solicitation', 'ExamDataController@postNewSolicitationnExamConfig')->name('dashboard.new.exam.solicitation.post');
-Route::get('/new-exam-result', 'ExamDataController@createNewResultExamConfig')->name('dashboard.new.exam.result');
-Route::post('/new-exam-result', 'ExamDataController@postNewResultExamConfig')->name('dashboard.new.exam.result.post');
-Route::get('/new-exam-review', 'ExamDataController@createNewReviewExamConfig')->name('dashboard.new.exam.review');
-Route::post('/new-exam-review', 'ExamDataController@postNewReviewExamConfig')->name('dashboard.new.exam.review.post');
+Route::get('/new-exam-complement', 'ExamDataController@createNewComplementExamConfig')->name('dashboard.new.exam.complement');
+Route::post('/new-exam-complement', 'ExamDataController@postNewComplementExamConfig')->name('dashboard.new.exam.complement.post');
 Route::get('/new-exam-interview', 'ExamDataController@createNewInterviewExamConfig')->name('dashboard.new.exam.interview');
 Route::post('/new-exam-interview', 'ExamDataController@postNewInterviewExamConfig')->name('dashboard.new.exam.interview.post');
 Route::get('/new-exam-passingscore', 'ExamDataController@createNewPassinscoreExamConfig')->name('dashboard.new.exam.passingscore');
 Route::post('/new-exam-passsingscore', 'ExamDataController@postNewPassingscoreConfig')->name('dashboard.new.exam.passingscore.post');
+Route::get('/new-exam-conclusion', 'ExamDataController@createNewExamConclusion')->name('dashboard.new.exam.conclusion');
+Route::post('/new-exam-conclusion', 'ExamDataController@postNewExamConclution')->name('dashboard.new.exam.conclusion.post');
 
 // Route::put('/new-exam', 'App\Http\Controllers\CollaboratorExamController@newExamUpdate')->name('dashboard.collaborator.new.exam.update');
 

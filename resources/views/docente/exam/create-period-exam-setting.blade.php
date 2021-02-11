@@ -13,14 +13,19 @@
 Definições da Prova
 </div>
 </div>
+
 <br>
+
 <div class="row">
 <div class="col">
 Periodo de Prova
 </div>
 </div>
+
 <br>
+
 <div class="form-group">
+
 <div class="row">
 <div class="col-1">
 <label for="anoexam">Ano</label>
@@ -34,8 +39,11 @@ Periodo de Prova
 @enderror
 </div>
 </div>
+
 <input type="hidden" name="registro" value="UNIPOSRIO" required>
+
 <p></p>
+
 <div class="row">
 <div class="col-1">
 <label for="semestreexam">Semestre</label>
@@ -49,20 +57,26 @@ Periodo de Prova
 @enderror
 </div>
 </div>
+
 </div>
+
 <hr>
+
 <div class="row">
 <div class="col">
 Situação
 </div>
 </div>
+
 <br>
+
 <div class="form-check">
 <input class="form-check-input" type="radio" id="activetrueexam" name="active" value="1"  @isset($examperiodconfig->active) @if ($examperiodconfig->active) checked @endif @else checked @endisset >
 <label class="form-check-label" for="activetrueexam">
 Ativo
 </label>
 </div>
+
 <div>
 <input class="form-check-input" type="radio" id="activefalseexam" name="active" value="0" @isset($examperiodconfig->active) @if (!$examperiodconfig->active) checked @endif @else @endif >
 <label class="form-check-label" for="activefalseexam">
@@ -74,7 +88,9 @@ Inativo
     </span>
 @enderror
 </div>
+
 <br>
+
 <div class="d-flex justify-content-end">
 <button type="submit" class="btn btn-primary">Próximo</button>
 </div>

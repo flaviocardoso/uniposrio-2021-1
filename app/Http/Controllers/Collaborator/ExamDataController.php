@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collaborator;
 use App\Http\Controllers\Controller;
 use App\Models\ExamData;
 use App\Models\InterviewData;
+use App\Models\ParticipationInstituion;
 use App\Models\PassingScore;
 use App\Models\PeriodData;
 use App\Models\RegistrationData;
@@ -24,6 +25,7 @@ class ExamDataController extends Controller
             ]);
     }
 
+    /* criar exame */
     public function postNewPeriodExamConfig(Request $request)
     {
         $period = $request->only('ano', 'semestre', 'active', 'registro');
@@ -47,10 +49,9 @@ class ExamDataController extends Controller
         ])->validate();
 
 
-        $periodUnique = PeriodData::where([
-            'ano', '=', $period['ano'],
-            'semestre', '=', $period['semestre']
-        ])->get();
+        $periodUnique = PeriodData::where('ano', $period['ano'])
+            ->where('semestre', $period['semestre'])
+            ->get();
 
         if ($periodUnique->count() > 0) {
             $request->session()->flash('errorperiod', 'Já existe este periodo no sistema');
@@ -69,7 +70,9 @@ class ExamDataController extends Controller
         $periodConfig->fill($period);
         $request->session()->put('examperiodconfig', $periodConfig);
 
-        return redirect()->route('collaborator.dashboard.new.exam.registration');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.registration');
     }
 
     public function createNewRegistrationExamConfig(Request $request)
@@ -84,12 +87,13 @@ class ExamDataController extends Controller
         Validator::make($registration,
         [
             'start' => ['required', 'date'],
-            'end' => ['required', 'date']
+            'end' => ['required', 'date', 'after:start']
         ], [
             'start.required' => 'O inicio da data de inscrição precisa ser inserio',
             'start.date' => 'O inicio da data de inscrição tem que ser de formato de data',
             'end.required' => 'A data de terminio de inscrição precisa ser inserio',
-            'end.date' => 'O inicio da data de inscrição tem que ser de formato de data',
+            'end.date' => 'A data de inscrição tem que ser de formato de data',
+            'end.after' => 'A data de termínio de inscrição tem que ser superior a de início',
         ]
         )->validate();
 
@@ -102,7 +106,9 @@ class ExamDataController extends Controller
         $registrationConfig->fill($registration);
         $request->session()->put('examregistrationconfig', $registrationConfig);
 
-        return redirect()->route('colllaborator.dashboard.new.exam.exam');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.exam');
     }
 
     public function createNewExamExamConfig(Request $request)
@@ -124,23 +130,24 @@ class ExamDataController extends Controller
         Validator::make($exam,
         [
             'date_exam' => ['required', 'date'],
-            'time_start_exam' => ['required', 'time'],
-            'duration_exam' => ['required', 'time'],
-            'num_questions_exam' => ['required', 'integer'],
-            'time_start_download_exam' => ['required', 'time'],
-            'time_end_download_exam' => ['required', 'time']
+            'time_start_exam' => ['required'],
+            'duration_exam' => ['required', 'date_format:H:i'],
+            'num_questions_exam' => ['required', 'integer', 'min:1'],
+            'time_start_download_exam' => ['required'],
+            'time_end_download_exam' => ['required', 'after:time_start_download_exam']
         ], [
             'date_exam.required' => 'A data de exame precisa ser inserido',
             'date_exam.date' => 'A data de exame precisa ser uma data',
             'time_start_exam.required' => 'O horário de início do exame precisa ser inserido',
-            'time_start_exam.time' => 'O horário de início do exame precisa ser um horário',
+            'time_start_exam.date_format' => 'O horário de início do exame precisa ser um horário',
             'duration_exam.required' => 'A duração do exame precisa ser inserida',
-            'duration_exam.time' => 'A duraração do exame precisa ser um horário',
+            'duration_exam.date_format' => 'A duraração do exame precisa ser do formato de HH:MM',
             'num_questions_exam.interger' => 'A quantidade de questões precisa ser um número',
             'time_start_download_exam.required' => 'O horário de início do download de prova precisa ser inserido',
-            'time_start_download_exam.time' => 'O horário de início do download de prova precisa ser um horário', 
+            'time_start_download_exam.date_format' => 'O horário de início do download de prova precisa ser um horário', 
             'time_end_download_exam.required' => 'O horário de início do download de prova precisa ser inserido',
-            'time_end_download_exam.time' => 'O horário de início do download de prova precisa ser um horário', 
+            'time_end_download_exam.date_format' => 'O horário de términio do download de prova precisa ser um horário', 
+            'time_end_download_exam.after' => 'O horário de términio do download precisa ser maior do ser inicio', 
         ])->validate();
 
         if (empty($request->session()->get('examexamconfig'))) {
@@ -152,12 +159,14 @@ class ExamDataController extends Controller
         $examConfig->fill($exam);
         $request->session()->put('examexamconfig', $examConfig);
 
-        return redirect()->route('colllaborator.dashboard.new.exam.complement');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.complement');
     }
 
     public function createNewComplementExamConfig(Request $request)
     {
-        return view('complement-date-exam-setting', ['examexamconfig' => $request->session()->get('examexamconfig')]);
+        return view('docente.exam.complement-date-exam-setting', ['examexamconfig' => $request->session()->get('examexamconfig')]);
     }
 
     public function postNewComplementExamConfig(Request $request)
@@ -174,7 +183,7 @@ class ExamDataController extends Controller
             'date_solicitation_exam' => ['required', 'date'],
             'date_result_exam' => ['required', 'date'],
             'date_review' => ['required', 'date'],
-            'time_review' => ['required', 'time']
+            'time_review' => ['required']
         ],
         [
             'date_solicitation_exam.required' => 'A data de solicitação precisa ser iniserida',
@@ -184,7 +193,7 @@ class ExamDataController extends Controller
             'date_review.required' => 'A data de revisão precisa ser inserida',
             'date_review.date' => 'A data de revisão precisa ser uma data',
             'time_review.required' => 'O horário de início de revisão precisa ser inserida',
-            'time_review.time' => 'O horário de início de revisão precisa ser um horário'
+            'time_review.date_format' => 'O horário de início de revisão precisa ser um horário'
         ])->validate();
 
         if (empty($request->session()->get('examexamconfig'))) {
@@ -196,7 +205,9 @@ class ExamDataController extends Controller
         $examConfig->fill($complement);
         $request->session()->put('examexamconfig', $examConfig);
 
-        return redirect()->route('collaborator.dashboard.new.exam.interview');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.interview');
     }
 
     public function createNewInterviewExamConfig(Request $request)
@@ -212,7 +223,7 @@ class ExamDataController extends Controller
             $interview,
             [
                 'start' => ['required', 'date'],
-                'end' => ['required', 'date'],
+                'end' => ['required', 'date', 'after:start'],
             ],
             [
                 'start.required' => 'A data de início da intrevista precisa ser inserida',
@@ -231,22 +242,30 @@ class ExamDataController extends Controller
         $interviewConf->fill($interview);
         $request->session()->put('interviewexamconfig', $interviewConf);
 
-        return redirect()->route('collaborator.dashboard.new.exam.passingscore');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.passingscore');
     }
 
-    public function createNewPassinscoreExamConfig(Request $request)
+    public function createNewPassingscoreExamConfig(Request $request)
     {
-        return view('docente.exam.passigscore-exam', 
+        $instituionsMestrado = ParticipationInstituion::select('instituions')->where('module', '=', 'M')->first();
+        $instituionsDoutorado = ParticipationInstituion::select('instituions')->where('module', '=', 'D')->first();
+
+        // var_dump($request->session()->get('passingscoreMexamconfig'));
+        // exit;
+        return view('docente.exam.passingscore-exam', 
         [
+            'instituionsmestrado' => $instituionsMestrado->instituions,
+            'instituionsdoutorado' => $instituionsDoutorado->instituions,
             'passingscoreMexamconfig' => $request->session()->get('passingscoreMexamconfig'),
             'passingscoreDexamconfig' => $request->session()->get('passingscoreDexamconfig')
         ]);
     }
 
-    public function postNewPassinscoreExamConfig(Request $request)
+    public function postNewPassingscoreExamConfig(Request $request)
     {
-        $passingscore = $request->all();
-
+        $passingscore = $request->only('instituionsM', 'instituionsD');
 
         if (
             empty($request->session()->get('passingscoreMexamconfig')) &&
@@ -255,17 +274,8 @@ class ExamDataController extends Controller
             $passingscoreM = new PassingScore();
             $passingscoreD = new PassingScore();
         } else {
-            if (empty($request->session()->get('passingscoreMexamconfig'))) {
-                $passingscoreM = new PassingScore();
-            } else {
-                $passingscoreM = $request->session()->get('passingscoreMexamconfig');
-            }
-
-            if (empty($request->session()->get('passingscoreDexamconfig'))) {
-                $passingscoreD = new PassingScore();
-            } else {
-                $passingscoreD = $request->session()->get('passingscoreDexamconfig');
-            }
+            $passingscoreM = $request->session()->get('passingscoreMexamconfig');
+            $passingscoreD = $request->session()->get('passingscoreDexamconfig');
         }
 
         $passingscoreM->fill(['module' => 'M', 'instituions' => $passingscore['instituionsM']]);
@@ -274,32 +284,55 @@ class ExamDataController extends Controller
         $request->session()->put('passingscoreMexamconfig', $passingscoreM);
         $request->session()->put('passingscoreDexamconfig', $passingscoreD);
 
-        return redirect()->route('collaborator.dashboard.new.exam.conclusion');
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.new.exam.conclusion');
     }
 
     public function createNewExamConclusion(Request $request)
     {
+        $examperiodconfig = $request->session()->get('examperiodconfig');
+        $examregistrationconfig = $request->session()->get('examregistrationconfig');
+        $examexamconfig = $request->session()->get('examexamconfig');
+        $interviewexamconfig = $request->session()->get('interviewexamconfig');
+        $passingscoreMexamconfig = $request->session()->get('passingscoreMexamconfig');
+        $passingscoreDexamconfig = $request->session()->get('passingscoreDexamconfig');
+
+        if (
+            is_null($examperiodconfig) ||
+            is_null($examregistrationconfig) ||
+            is_null($examexamconfig) ||
+            is_null($interviewexamconfig) ||
+            is_null($passingscoreMexamconfig) ||
+            is_null($passingscoreDexamconfig)
+            ) {
+                return $request->wantsJson()
+                ? new JsonResource(['message' => trans('')], 201) 
+                : redirect()->route('collaborator.dashboard.new.exam.period');
+            }
+        
         return view('docente.exam.conclusion-exam-config', 
             [
-                'examperiodconfig' => $request->session()->get('examperiodconfig'),
-                'examregistrationconfig' => $request->session()->get('examregistrationconfig'),
-                'examexamconfig' => $request->session()->get('examexamconfig'),
-                'interviewexamconfig' => $request->session()->get('interviewexamconfig'),
-                'passingscoreMexamconfig' => $request->session()->get('passingscoreMexamconfig'),
-                'passingscoreDexamconfig' => $request->session()->get('passingscoreDexamconfig')
+                'examperiodconfig' => $examperiodconfig,
+                'examregistrationconfig' => $examregistrationconfig,
+                'examexamconfig' => $examexamconfig,
+                'interviewexamconfig' => $interviewexamconfig,
+                'passingscoreMexamconfig' => $passingscoreMexamconfig,
+                'passingscoreDexamconfig' => $passingscoreDexamconfig
             ]
         );
     }
 
     public function postNewExamConclution(Request $request)
     {
-
+        $collaboratorId = Auth::guard('collaborator')->user()->id;
         $period = $request->session()->get('examperiodconfig');
+        // var_dump($period);
+        // exit;
 
-        $periodUnique = PeriodData::where([
-            'ano', '=', $period['ano'],
-            'semestre', '=', $period['semestre']
-        ])->get();
+        $periodUnique = PeriodData::where('ano', $period['ano'])
+            ->where('semestre', $period['semestre'])
+            ->get();
 
         if ($periodUnique->count() > 0) {
             $request->session()->flash('errorperiod', 'Já existe este periodo no sistema');
@@ -309,109 +342,257 @@ class ExamDataController extends Controller
                 : redirect()->route('dashboard.new.exam.period');
         }
 
+        PeriodData::where('active', true)
+            ->update(['active' => false]);
+    
+        $period->fill(['collaborator_id' => $collaboratorId]);
         $period->save();
+
         $periodId = $period->id;
 
+        $associate = [
+            'collaborator_id' => $collaboratorId,
+            'period_id' => $periodId
+        ];
+
         $registration = $request->session()->get('examregistrationconfig');
-        $registration->fill(
-            [
-                'collaborator_id' => Auth::guard('collaborator')->user()->id,
-                'period_id' => $periodId
-            ]
-        );
+        $registration->fill($associate);
         $registration->save();
 
         $exam = $request->session()->get('examexamconfig');
-        $exam->fill(
-            [
-                'collaborator_id' => Auth::guard('collaborator')->user()->id,
-                'period_id' => $periodId
-            ]
-        );
+        $exam->fill($associate);
         $exam->save();
 
         $interview = $request->session()->get('interviewexamconfig');
-        $interview->fill(
-            [
-                'collaborator_id' => Auth::guard('collaborator')->user()->id,
-                'period_id' => $periodId
-            ]
-        );
+        $interview->fill($associate);
         $interview->save();
 
         $passingscoreM = $request->session()->get('passingscoreMexamconfig');
-        $passingscoreM->fill(
-            [
-                'collaborator_id' => Auth::guard('collaborator')->user()->id,
-                'period_id' => $periodId
-            ]
-        );
+        $passingscoreM->fill($associate);
         $passingscoreM->save();
 
         $passingscoreD = $request->session()->get('passingscoreDexamconfig');
-        $passingscoreD->fill(
-            [
-                'collaborator_id' => Auth::guard('collaborator')->user()->id,
-                'period_id' => $periodId
-            ]
-        );
+        $passingscoreD->fill($associate);
         $passingscoreD->save();
 
-        return redirect()->route('');
+        // terminar a sessão
+        $request->session()->forget('examperiodconfig');
+        $request->session()->forget('examregistrationconfig');
+        $request->session()->forget('examexamconfig');
+        $request->session()->forget('interviewexamconfig');
+        $request->session()->forget('passingscoreMexamconfig');
+        $request->session()->forget('passingscoreDexamconfig');
+
+        return $request->wantsJson()
+        ? new JsonResource(['message' => trans('')], 201) 
+        : redirect()->route('collaborator.dashboard.exam');
+    }
+    /* fim de criar exame */
+
+
+    public function showExam()
+    {
+        $periodactive = PeriodData::where('active', true)->first();
+        $periodinactive = PeriodData::where('active', false)->get();
+
+        return view(
+            'docente.exam.exam',
+            compact('periodactive', 'periodinactive')
+        );
     }
 
-    public function showExamConfig()
+    /* edite exame ativo */
+    public function showExamEdit(int $id, Request $request)
     {
-        return view('docente.exam.edit-exam-setting');
-    }
-    // periodo configuração de exam
-    public function storePeriodExamConfig()
-    {
-        return view('');
+        $periodConfig = PeriodData::find($id);
+        if (!$periodConfig) {
+            return redirect()->route('collaborator.dashboard.exam');
+        }
+
+        $registrationConfig = RegistrationData::where('period_id', $id)->first();
+        $examConfig = ExamData::where('period_id', $id)->first();
+        $interviewConf = InterviewData::where('period_id', $id)->first();
+        $passingscoreMConf = PassingScore::where('period_id', $id)
+            ->where('module', 'M')
+            ->first();
+        $passingscoreDConf = PassingScore::where('period_id', $id)
+            ->where('module', 'D')
+            ->first();
+
+        $mensagem = $request->session()->get('mensagem');
+
+        return view(
+            'docente.exam.edit-exam-setting', 
+            compact(
+                'periodConfig', 
+                'registrationConfig', 
+                'examConfig', 
+                'interviewConf', 
+                'passingscoreMConf',
+                'passingscoreDConf',
+                'mensagem'
+                )
+        );
     }
 
-    public function updatePeriodExamConfig()
+    public function updateExamEdit(int $id, Request $request)
     {
-        return view('');
-    }
-    // inscrição configuração de exam
-    public function storeRegistrationExamConfig()
-    {
-        return view('');
-    }
+        $mensagem = "";
 
-    public function updateRegistrationExamConfig()
-    {
-        return view('');
-    }
-    // prova configuração de exam
-    public function storeExamConfig()
-    {
-        return view('');
-    }
+        switch ($request->update_exam) {
+            case 'active_exam':
+                $campos = $request->only('activeexam');
 
-    public function updateExamConfig()
-    {
-        return view('');
-    }
-    // entrevista configuração de exam
-    public function storeInterviewExamConfig()
-    {
-        return view('');
-    }
+                Validator::make($campos, ['activeexam' => ['required']]);
 
-    public function updateInterviewExamConfig()
-    {
-        return view('');
-    }
-    // porte de corte configuração de exam
-    public function storePassingStoreExamConfig()
-    {
-        return view('');
-    }
+                PeriodData::where('active', true)
+                    ->update(['active' => false]);
 
-    public function updatePassingStoreExamConfig()
-    {
-        return view('');
+                $period = PeriodData::find($id);
+                $period->active = $campos['activeexam'];
+                $period->save();
+
+                if ($campos['activeexam']) {
+                    $mensagem = "Periodo ativado";
+                } else {
+                    $mensagem = "Periodo inativado";
+                }
+
+                break;
+
+            case 'registre_exam':
+                $campos = $request->only('date_register_start', 'date_register_end');
+
+                Validator::make($campos, [
+                    'date_register_start' => ['required', 'date'],
+                    'date_register_end' => ['required', 'date', 'after:date_register_start']
+                ], [])->validate();
+                
+                RegistrationData::where('period_id', $id)
+                    ->update([
+                    'start' => $campos['date_register_start'], 
+                    'end' => $campos['date_register_end']
+                    ]);
+
+                $mensagem = "Inscrição atualizada";
+
+                break;
+
+            case 'prova_exam':
+                $campos = $request->only('date_exam', 'time_start_exam', 'duration_exam', 'num_questions_exam');
+
+                Validator::make($campos, [
+                    'date_exam' => ['required', 'date'],
+                    'time_start_exam' => ['required'],
+                    'duration_exam' => ['required', 'date_format:H:i'],
+                    'num_questions_exam' => ['required', 'integer', 'min:1'],])->validate();
+                
+                ExamData::where('period_id', $id)
+                    ->update(['date_exam' => $campos['date_exam'],
+                    'time_start_exam' => $campos['time_start_exam'],
+                    'duration_exam' => $campos['duration_exam'],
+                    'num_questions_exam' => $campos['num_questions_exam']
+                ]);
+
+                $mensagem = "Prova atualizada";
+
+                break;
+
+            case 'download_exam':
+                $campos = $request->only('time_start_download_exam', 'time_end_download_exam');
+
+                Validator::make($campos, [
+                    'time_start_download_exam' => ['required'],
+                    'time_end_download_exam' => ['required', 'after:time_start_download_exam']
+                    ])->validate();
+
+                ExamData::where('period_id', $id)
+                    ->update(['time_start_download_exam' => $campos['time_start_download_exam'],
+                    'time_end_download_exam' => $campos['time_end_download_exam']
+                ]);
+
+                $mensagem = "Download atualizado";
+
+                break;
+
+            case 'result_exam':
+                $campos = $request->only('date_solicitation_exam', 'date_result_exam');
+
+                Validator::make($campos, [
+                    'date_solicitation_exam' => ['required', 'date'],
+                    'date_result_exam' => ['required', 'date']
+                    ])->validate();
+                
+                ExamData::where('period_id', $id)
+                    ->update(['date_solicitation_exam' => $campos['date_solicitation_exam'],
+                    'date_result_exam' => $campos['date_result_exam']
+                ]);
+
+                $mensagem = "Solicitação e Resultado atualizados";
+
+                break;
+
+            case 'review_exam':
+                $campos = $request->only('date_review', 'time_review');
+
+                Validator::make($campos, [
+                    'date_review' => ['required', 'date'],
+                    'time_review' => ['required']
+                    ])->validate();
+    
+                ExamData::where('period_id', $id)
+                    ->update(['date_review' => $campos['date_review'],
+                    'time_review' => $campos['time_review']
+                ]);
+
+                $mensagem = "Revisão atualizado";
+
+                break;
+
+            case 'interview_exam':
+                $campos = $request->only('date_interview_start', 'date_interview_end');
+
+                Validator::make($campos, [
+                    'date_interview_start' => ['required', 'date'],
+                    'date_interview_end' => ['required', 'date', 'after:date_interview_start']
+                    ])->validate();
+
+                InterviewData::where('period_id', $id)
+                    ->update(['start' => $campos['date_interview_start'],
+                    'end' => $campos['date_interview_end']
+                ]);
+
+                $mensagem = "Intrevista atualizada";
+
+                break;
+
+            case 'mestrado_exam':
+                $campos = $request->only('instituionsM');
+
+                PassingScore::where('period_id', $id)
+                    ->where('module', 'M')
+                    ->update(['instituions' => $campos['instituionsM']]);
+
+                $mensagem = "Pontos de corte de Mestrado atualizado";
+                
+                break;
+
+            case 'doutorado_exam':
+                $campos = $request->only('instituionsD');
+
+                PassingScore::where('period_id', $id)
+                    ->where('module', 'D')
+                    ->update(['instituions' => $campos['instituionsD']]);
+
+                $mensagem = "Pontos de corte de Doutorado atualizado";
+
+                break;
+        }
+
+        
+
+        return redirect(
+            redirect()->back()->getTargetUrl() . '#' . $request->update_exam
+            )->with($request->update_exam, $mensagem);
     }
 }

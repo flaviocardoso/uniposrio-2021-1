@@ -4,7 +4,7 @@
 <div align="center">
 <div>
     @if (session('verified'))
-    <p>Verifique o email para ativação</p>
+    <p>Email verificado!</p>
     @endif
     @if (Auth::guard('student'))
     <p>dashboard student</p>

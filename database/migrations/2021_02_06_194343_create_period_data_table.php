@@ -16,7 +16,7 @@ class CreatePeriodDataTable extends Migration
         Schema::create('period_data', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('collaborator_id');
-            $table->string('semetre', 10);
+            $table->string('semestre', 10);
             $table->year('ano');
             $table->string('registro');
             $table->boolean('active');

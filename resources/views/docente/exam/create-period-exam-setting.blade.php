@@ -14,10 +14,10 @@ Definições da Prova
 </div>
 </div>
 
-<br>
+<hr>
 
 <div class="row">
-<div class="col">
+<div class="col-2 d-flex justify-content-center">
 Periodo de Prova
 </div>
 </div>
@@ -28,10 +28,10 @@ Periodo de Prova
 
 <div class="row">
 <div class="col-1">
-<label for="anoexam">Ano</label>
+<label for="anoexam">Ano : </label>
 </div>
-<div class="col-4">
-<input type="number" name="ano" value="{{ $examperiodconfig->ano ?? '' }}" id="anoexam" min="{{ date('Y') }}" max="2100" size="2" class="@error('ano') is-invalid @enderror" required>
+<div class="col-1">
+<input type="number" name="ano" value="{{ old('ano', $examperiodconfig->ano ?? '') }}" id="anoexam" min="{{ date('Y') }}" max="2100" size="2" class="@error('ano') is-invalid @enderror form-control" required>
 @error('ano')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -46,10 +46,10 @@ Periodo de Prova
 
 <div class="row">
 <div class="col-1">
-<label for="semestreexam">Semestre</label>
+<label for="semestreexam">Semestre : </label>
 </div>
-<div class="col-4">
-<input type="number" name="semestre" value="{{ $examperiodconfig->semestre ?? '' }}" id="semestreexam" min="1" max="2.9" step="0.1" class="@error('semestre') is-invalid @enderror" required>
+<div class="col-1">
+<input type="number" name="semestre" value="{{ old('semestre', $examperiodconfig->semestre ?? '') }}" id="semestreexam" min="1" max="2.9" step="0.1" class="@error('semestre') is-invalid @enderror form-control" required>
 @error('semestre')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@ Periodo de Prova
 <hr>
 
 <div class="row">
-<div class="col">
+<div class="col-1 d-flex justify-content-center">
 Situação
 </div>
 </div>
@@ -77,7 +77,7 @@ Ativo
 </label>
 </div>
 
-<div>
+<div class="form-check">
 <input class="form-check-input" type="radio" id="activefalseexam" name="active" value="0" @isset($examperiodconfig->active) @if (!$examperiodconfig->active) checked @endif @else @endif >
 <label class="form-check-label" for="activefalseexam">
 Inativo
@@ -89,7 +89,7 @@ Inativo
 @enderror
 </div>
 
-<br>
+<hr>
 
 <div class="d-flex justify-content-end">
 <button type="submit" class="btn btn-primary">Próximo</button>

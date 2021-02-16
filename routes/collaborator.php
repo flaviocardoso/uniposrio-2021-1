@@ -24,9 +24,37 @@ Route::get('/register', 'Auth\RegisterController@index')->name('register'); // f
 Route::post('/register', 'Auth\RegisterController@store')->name('register.submit'); // adicioanr novo colaborador
 // interno
 Route::get('', 'DashBoardController@index')->name('dashboard');
-Route::get('/participation-instituion', 'ParticipationInstituionController@index')->name('participation.instituion');
-Route::get('/participation-instituion/{id}', 'ParticipationInstituionController@showFormUpdate')->name('participation.instituion.update');
-Route::put('/participation-instituion/{id}', 'ParticipationInstituionController@update')->name('participation.instituion.update');
+
+// middleware auth collaborator
+Route::middleware('auth:collaborator')->group( function () {
+    Route::get('/participation-instituion', 'ParticipationInstituionController@index')->name('participation.instituion');
+    Route::get('/participation-instituion/{id}', 'ParticipationInstituionController@showFormUpdate')->name('participation.instituion.update');
+    Route::put('/participation-instituion/{id}', 'ParticipationInstituionController@update')->name('participation.instituion.update');
+
+    Route::get('/new-exam-period', 'ExamDataController@createNewPeriodExamConfig')->name('dashboard.new.exam.period');
+    Route::post('/new-exam-period', 'ExamDataController@postNewPeriodExamConfig')->name('dashboard.new.exam.period.post');
+    Route::get('/new-exam-registration', 'ExamDataController@createNewRegistrationExamConfig')->name('dashboard.new.exam.registration');
+    Route::post('/new-exam-registration', 'ExamDataController@postNewRegistrationExamConfig')->name('dashboard.new.exam.registration.post');
+    Route::get('/new-exam-exam', 'ExamDataController@createNewExamExamConfig')->name('dashboard.new.exam.exam');
+    Route::post('/new-exam-exam', 'ExamDataController@postNewExamExamConfig')->name('dashboard.new.exam.exam.post');
+    Route::get('/new-exam-complement', 'ExamDataController@createNewComplementExamConfig')->name('dashboard.new.exam.complement');
+    Route::post('/new-exam-complement', 'ExamDataController@postNewComplementExamConfig')->name('dashboard.new.exam.complement.post');
+    Route::get('/new-exam-interview', 'ExamDataController@createNewInterviewExamConfig')->name('dashboard.new.exam.interview');
+    Route::post('/new-exam-interview', 'ExamDataController@postNewInterviewExamConfig')->name('dashboard.new.exam.interview.post');
+    Route::get('/new-exam-passingscore', 'ExamDataController@createNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore');
+    Route::post('/new-exam-passingscore', 'ExamDataController@postNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore.post');
+    Route::get('/new-exam-conclusion', 'ExamDataController@createNewExamConclusion')->name('dashboard.new.exam.conclusion');
+    Route::post('/new-exam-conclusion', 'ExamDataController@postNewExamConclution')->name('dashboard.new.exam.conclusion.post');
+    
+    Route::get('/exam', 'ExamDataController@showExam')->name('dashboard.exam');
+    Route::get('/exam-active/{id}', 'ExamDataController@showExamEdit')->name('dashboard.exam.active');
+    Route::put('/exam-active/{id}', 'ExamDataController@updateExamEdit')->name('dashboard.exam.active.update');
+    // Route::get('/previous-exam', 'ExamDataController@listExamPrevious')->name('dashboard.previous.exam.list');
+    Route::get('/previous-exam/{id}', 'ExamDataController@showExamEdit')->name('dashboard.exam.inative');
+    Route::put('/previous-exam/{id}', 'ExamDataController@updateExamEdit')->name('dashboard.exam.inative.update');
+
+});
+
 Route::get('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
 Route::post('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
 Route::get('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');
@@ -35,23 +63,7 @@ Route::put('/personal-information', 'App\Http\Controllers\Auth\CollaboratorContr
 Route::get('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@formRecommendationLetter')->name('dashboard.collaborator.recommandation.letter');
 Route::post('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@submitRecommendationLetter')->name('dashboard.collaborator.recommandation.letter.save');
 
-Route::get('/exam', 'App\Http\Controllers\ExamDataController@index')->name('dashboard.exam');
-Route::get('/previous-exam', 'App\Http\Controllers\ExamDataController@formPreviousExam')->name('dashboard.collaborator.previous.exam');
 
-Route::get('/new-exam-period', 'ExamDataController@createNewPeriodExamConfig')->name('dashboard.new.exam.period');
-Route::post('/new-exam-period', 'ExamDataController@postNewPeriodExamConfig')->name('dashboard.new.exam.period.post');
-Route::get('/new-exam-registration', 'ExamDataController@createNewRegistrationExamConfig')->name('dashboard.new.exam.registration');
-Route::post('/new-exam-registration', 'ExamDataController@postNewRegistrationExamConfig')->name('dashboard.new.exam.registration.post');
-Route::get('/new-exam-exam', 'ExamDataController@createNewExamExamConfig')->name('dashboard.new.exam.exam');
-Route::post('/new-exam-exam', 'ExamDataController@postNewExamExamConfig')->name('dashboard.new.exam.exam.post');
-Route::get('/new-exam-complement', 'ExamDataController@createNewComplementExamConfig')->name('dashboard.new.exam.complement');
-Route::post('/new-exam-complement', 'ExamDataController@postNewComplementExamConfig')->name('dashboard.new.exam.complement.post');
-Route::get('/new-exam-interview', 'ExamDataController@createNewInterviewExamConfig')->name('dashboard.new.exam.interview');
-Route::post('/new-exam-interview', 'ExamDataController@postNewInterviewExamConfig')->name('dashboard.new.exam.interview.post');
-Route::get('/new-exam-passingscore', 'ExamDataController@createNewPassinscoreExamConfig')->name('dashboard.new.exam.passingscore');
-Route::post('/new-exam-passsingscore', 'ExamDataController@postNewPassingscoreConfig')->name('dashboard.new.exam.passingscore.post');
-Route::get('/new-exam-conclusion', 'ExamDataController@createNewExamConclusion')->name('dashboard.new.exam.conclusion');
-Route::post('/new-exam-conclusion', 'ExamDataController@postNewExamConclution')->name('dashboard.new.exam.conclusion.post');
 
 // Route::put('/new-exam', 'App\Http\Controllers\CollaboratorExamController@newExamUpdate')->name('dashboard.collaborator.new.exam.update');
 

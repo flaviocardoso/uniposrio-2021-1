@@ -9,30 +9,43 @@ Definições da Prova
 </div>
 </div>
 
-<br>
-
-<div class="form-group">
-<div class="row">
-<div class="col-1">
-<label>Data da Prova</label>
-</div>
-<br>
-<div class="col-4">
-<input name="date_exam" type="date" required value="">
-</div>
-</div>
-</div>
-
 <hr>
 
+<div class="row">
+<div class="col-4 d-flex justify-content-center">
+Prova
+</div>
+</div>
+
+<br>
+
+<div class="form-group">
+<div class="row">
+<div class="col-2">
+<label>Data : </label>
+</div>
+<br>
+<div class="col-2">
+<input name="date_exam" type="date" value="{{ old('date_exam', $examexamconfig->date_exam ?? '') }}" class="@error('date_exam') is-invalid @enderror form-control" required>
+@error('date_exam')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+@enderror
+</div>
+</div>
+</div>
+
+<br>
+
 <div class="form-group">
 
 <div class="row">
-<div class="col-1">
-<label for="">Hora de Inicio</label>
+<div class="col-2">
+<label for="">Hora de Início : </label>
 </div>
-<div class="col-4">
-<input type="time" name="time_start_exam" value="{{ $examregistrationconfig->date_review ?? '' }}" id="date_review" class="@error('time_start_exam') is-invalid @enderror" required>
+<div class="col-2">
+<input type="time" name="time_start_exam" value="{{ old('time_start_exam', $examexamconfig->time_start_exam ?? '' ) }}" id="date_review" class="@error('time_start_exam') is-invalid @enderror form-control" required>
 @error('time_start_exam')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -41,14 +54,14 @@ Definições da Prova
 </div>
 </div>
 
-<p></p>
+<br>
 
 <div class="row">
-<div class="col-1">
-<label for="duration_exam">Duração</label>
+<div class="col-2">
+<label for="duration_exam">Duração (HH:MM) : </label>
 </div>
-<div class="col-4">
-<input type="time" name="duration_exam" value="{{ $examregistrationconfig->duration_exam ?? '' }}" id="duration_exam" class="@error('duration_exam') is-invalid @enderror" required>
+<div class="col-2">
+<input type="text" name="duration_exam" pattern="\d{2}:\d{2}" placeholder="HH:MM" value="{{ old('duration_exam', $examexamconfig->duration_exam ?? '' ) }}" id="duration_exam" class="@error('duration_exam') is-invalid @enderror form-control" required>
 @error('duration_exam')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -57,14 +70,14 @@ Definições da Prova
 </div>
 </div>
 
-<p></p>
+<br>
 
 <div class="row">
-<div class="col-1">
-<label for="num_questions_exam">Qtd. de Questões</label>
+<div class="col-2">
+<label for="num_questions_exam">Qtd. de Questões : </label>
 </div>
-<div class="col-4">
-<input type="number" name="num_questions_exam" value="{{ $examregistrationconfig->num_questions_exam ?? '' }}" id="num_questions_exam" class="@error('num_questions_exam') is-invalid @enderror" required>
+<div class="col-1">
+<input type="number" name="num_questions_exam" value="{{ old('num_questions_exam', $examexamconfig->num_questions_exam ?? '' ) }}" id="num_questions_exam" class="@error('num_questions_exam') is-invalid @enderror form-control" required>
 @error('num_questions_exam')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -73,14 +86,21 @@ Definições da Prova
 </div>
 </div>
 
-<p></p>
+<hr>
+<div class="row">
+<div class="col-3 d-flex justify-content-center">
+Download de Prova
+</div>
+</div>
+
+<br>
 
 <div class="row">
 <div class="col-1">
-<label for="time_start_download_exam">Inicio de Download de Porva</label>
+<label for="time_start_download_exam">Início : </label>
 </div>
-<div class="col-4">
-<input type="time" name="time_start_download_exam" value="{{ $examregistrationconfig->time_start_download_exam ?? '' }}" id="time_start_download_exam" class="@error('time_start_download_exam') is-invalid @enderror" required>
+<div class="col-2">
+<input type="time" name="time_start_download_exam" value="{{ old('time_start_download_exam', $examexamconfig->time_start_download_exam ?? '' ) }}" id="time_start_download_exam" class="@error('time_start_download_exam') is-invalid @enderror form-control" required>
 @error('time_start_download_exam')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -93,10 +113,10 @@ Definições da Prova
 
 <div class="row">
 <div class="col-1">
-<label for="time_end_download_exam">Termino de Download de Prova</label>
+<label for="time_end_download_exam">Término : </label>
 </div>
-<div class="col-4">
-<input type="time" name="time_end_download_exam" value="{{ $examregistrationconfig->time_end_download_exam ?? '' }}" id="time_end_download_exam" class="@error('time_end_download_exam') is-invalid @enderror" required>
+<div class="col-2">
+<input type="time" name="time_end_download_exam" value="{{ old('time_end_download_exam', $examexamconfig->time_end_download_exam ?? '' ) }}" id="time_end_download_exam" class="@error('time_end_download_exam') is-invalid @enderror form-control" required>
 @error('time_end_download_exam')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>
@@ -107,11 +127,11 @@ Definições da Prova
 
 </div>
 
-<br>
+<hr>
 
 <div class="d-flex justify-content-between">
 <a href="{{ route('collaborator.dashboard.new.exam.registration') }}" class="btn btn-danger">Anterior</a>
-<button type="button" class="btn btn-primary">Próximo</button>
+<button type="submit" class="btn btn-primary">Próximo</button>
 </div> 
 </div>
 

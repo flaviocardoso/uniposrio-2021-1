@@ -21,3 +21,4 @@
       <input name="bt_trocarSenha" type="submit" value="Salvar"><em>Save</em>
       </p>
 </form>
+@endsection

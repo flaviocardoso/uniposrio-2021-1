@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeriodDataTable extends Migration
+class CreateProvaExamFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreatePeriodDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('period_data', function (Blueprint $table) {
+        Schema::create('prova_exam_files', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('period_id');
             $table->integer('collaborator_id');
-            $table->string('semestre', 10);
-            $table->year('ano');
-            $table->string('registro');
-            $table->boolean('active');
+            $table->json('file_config'); // [{file, lang}]
             $table->timestamps();
-            $table->unique(['semestre', 'ano']);
+
+            $table->foreign('period_id')
+                ->references('id')
+                ->on('period_data');
 
             $table->foreign('collaborator_id')
                 ->references('id')
@@ -36,6 +37,6 @@ class CreatePeriodDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('period_data');
+        Schema::dropIfExists('prova_exam_files');
     }
 }

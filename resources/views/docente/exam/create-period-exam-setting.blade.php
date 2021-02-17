@@ -49,7 +49,7 @@ Periodo de Prova
 <label for="semestreexam">Semestre : </label>
 </div>
 <div class="col-1">
-<input type="number" name="semestre" value="{{ old('semestre', $examperiodconfig->semestre ?? '') }}" id="semestreexam" min="1" max="2.9" step="0.1" class="@error('semestre') is-invalid @enderror form-control" required>
+<input type="number" name="semestre" value="{{ old('semestre', $examperiodconfig->semestre ?? '') }}" id="semestreexam" min="1" max="2.9" step="0.5" class="@error('semestre') is-invalid @enderror form-control" required>
 @error('semestre')
     <span class="invalid-feedback" role="alert">
         <strong>{{ $message }}</strong>

@@ -31,20 +31,20 @@ Route::middleware('auth:collaborator')->group( function () {
     Route::get('/participation-instituion/{id}', 'ParticipationInstituionController@showFormUpdate')->name('participation.instituion.update');
     Route::put('/participation-instituion/{id}', 'ParticipationInstituionController@update')->name('participation.instituion.update');
 
-    Route::get('/new-exam-period', 'ExamDataController@createNewPeriodExamConfig')->name('dashboard.new.exam.period');
-    Route::post('/new-exam-period', 'ExamDataController@postNewPeriodExamConfig')->name('dashboard.new.exam.period.post');
-    Route::get('/new-exam-registration', 'ExamDataController@createNewRegistrationExamConfig')->name('dashboard.new.exam.registration');
-    Route::post('/new-exam-registration', 'ExamDataController@postNewRegistrationExamConfig')->name('dashboard.new.exam.registration.post');
-    Route::get('/new-exam-exam', 'ExamDataController@createNewExamExamConfig')->name('dashboard.new.exam.exam');
-    Route::post('/new-exam-exam', 'ExamDataController@postNewExamExamConfig')->name('dashboard.new.exam.exam.post');
-    Route::get('/new-exam-complement', 'ExamDataController@createNewComplementExamConfig')->name('dashboard.new.exam.complement');
-    Route::post('/new-exam-complement', 'ExamDataController@postNewComplementExamConfig')->name('dashboard.new.exam.complement.post');
-    Route::get('/new-exam-interview', 'ExamDataController@createNewInterviewExamConfig')->name('dashboard.new.exam.interview');
-    Route::post('/new-exam-interview', 'ExamDataController@postNewInterviewExamConfig')->name('dashboard.new.exam.interview.post');
-    Route::get('/new-exam-passingscore', 'ExamDataController@createNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore');
-    Route::post('/new-exam-passingscore', 'ExamDataController@postNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore.post');
-    Route::get('/new-exam-conclusion', 'ExamDataController@createNewExamConclusion')->name('dashboard.new.exam.conclusion');
-    Route::post('/new-exam-conclusion', 'ExamDataController@postNewExamConclution')->name('dashboard.new.exam.conclusion.post');
+    Route::get('/new-exam-period', 'ExamCreateController@createNewPeriodExamConfig')->name('dashboard.new.exam.period');
+    Route::post('/new-exam-period', 'ExamCreateController@postNewPeriodExamConfig')->name('dashboard.new.exam.period.post');
+    Route::get('/new-exam-registration', 'ExamCreateController@createNewRegistrationExamConfig')->name('dashboard.new.exam.registration');
+    Route::post('/new-exam-registration', 'ExamCreateController@postNewRegistrationExamConfig')->name('dashboard.new.exam.registration.post');
+    Route::get('/new-exam-exam', 'ExamCreateController@createNewExamExamConfig')->name('dashboard.new.exam.exam');
+    Route::post('/new-exam-exam', 'ExamCreateController@postNewExamExamConfig')->name('dashboard.new.exam.exam.post');
+    Route::get('/new-exam-complement', 'ExamCreateController@createNewComplementExamConfig')->name('dashboard.new.exam.complement');
+    Route::post('/new-exam-complement', 'ExamCreateController@postNewComplementExamConfig')->name('dashboard.new.exam.complement.post');
+    Route::get('/new-exam-interview', 'ExamCreateController@createNewInterviewExamConfig')->name('dashboard.new.exam.interview');
+    Route::post('/new-exam-interview', 'ExamCreateController@postNewInterviewExamConfig')->name('dashboard.new.exam.interview.post');
+    Route::get('/new-exam-passingscore', 'ExamCreateController@createNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore');
+    Route::post('/new-exam-passingscore', 'ExamCreateController@postNewPassingscoreExamConfig')->name('dashboard.new.exam.passingscore.post');
+    Route::get('/new-exam-conclusion', 'ExamCreateController@createNewExamConclusion')->name('dashboard.new.exam.conclusion');
+    Route::post('/new-exam-conclusion', 'ExamCreateController@postNewExamConclution')->name('dashboard.new.exam.conclusion.post');
     
     Route::get('/exam', 'ExamDataController@showExam')->name('dashboard.exam');
     Route::get('/exam-active/{id}', 'ExamDataController@showExamEdit')->name('dashboard.exam.active');
@@ -52,42 +52,48 @@ Route::middleware('auth:collaborator')->group( function () {
     // Route::get('/previous-exam', 'ExamDataController@listExamPrevious')->name('dashboard.previous.exam.list');
     Route::get('/previous-exam/{id}', 'ExamDataController@showExamEdit')->name('dashboard.exam.inative');
     Route::put('/previous-exam/{id}', 'ExamDataController@updateExamEdit')->name('dashboard.exam.inative.update');
+    
+    Route::get('/redefine-password', 'RedefineController@form')->name('dashboard.redefine.password'); // formulário de redefinir senha
+    Route::post('/redefine-password', 'RedefineController@submit')->name('dashboard.redefine.password.submit'); // salvar uma nova senha
+
+    Route::get('/personal-information', 'PersonalInfoController@form')->name('dashboard.personal.info');
+    Route::post('/personal-information', 'PersonalInfoController@submit')->name('dashboard.personal.info.save');
+    Route::put('/personal-information', 'PersonalInfoController@update')->name('dashboard.personal.info.update');
+    // Route::get('/recommendation-letter', 'RecommendationLetterController@form')->name('dashboard.recommandation.letter');
+    // Route::post('/recommendation-letter', 'RecommendationLetterController@submit')->name('dashboard.recommandation.letter.save');
+
+    Route::prefix('collaborators')->group(function () {
+        Route::get('/', 'CollaboratorsController@list')->name('dashboard.collaborator.list');
+        Route::get('/{id}/personal-information', 'CollaboratorsController@formInfo')->name('dashboard.collaborator.personal-info');
+        Route::put('/{id}/personal-information', 'CollaboratorsController@updateInfo')->name('dashboard.collaborator.personal-info.update');
+        Route::put('/{id}/nivel', 'CollaboratorsController@updateNivel')->name('dashboard.collaborator.collaborator.nivel.update');
+        Route::delete('/{:id}', 'CollaboratorsController@delete')->name('dashboard.collaborator.delete');
+    });
+
+    Route::prefix('students')->group(function () {
+        Route::get('/', 'StudentsController@list')->name('dashboard.student');
+        Route::get('/{:id}/personal-information', 'StudentsController@formInfo')->name('dashboard.student.personal-info');
+        Route::put('/{:id}/personal-information', 'StudentsController@UpdateInfo')->name('dashboard.student.personal-info.update');
+        Route::get('/{:id}/institution', 'StudentsController@formInstituition')->name('dashboard.student.institution');
+        Route::put('/{:id}/institution', 'StudentsController@InstituitionUpdate')->name('dashboard.student.institution.update');
+        Route::get('/{:id}/area', 'StudentsController@formArea')->name('dashboard.student.area');
+        Route::put('/{:id}/area', 'StudentsController@AreaUpdate')->name('dashboard.student.area.update');
+        Route::get('/{:id}/document', 'StudentsController@formDocument')->name('dashboard.student.document');
+        Route::put('/{:id}/document', 'StudentsController@DocumentUpdate')->name('dashboard.student.document.update');
+        Route::get('/{:id}/recommnedation-letter', 'StudentsController@formRecommendationLetter')->name('dashboard.student.document');
+        Route::put('/{:id}/recommendation-letter', 'StudentsController@recommendationLetterUpdate')->name('dashboard.student.document.update'); 
+        Route::delete('/{:id}', 'StudentsController@delete')->name('dashboard.student.delete');
+    });
 
 });
 
-Route::get('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@formRedefinePassword')->name('dashboard.collaborator.redefine.password'); // formulário de redefinir senha
-Route::post('/redefine-password', 'App\Http\Controllers\Auth\CollaboratorController@submitRedefinePassword')->name('dashboard.collaborator.redefine.password.submit'); // salvar uma nova senha
-Route::get('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@formPersonalInfo')->name('dashboard.collaborator.personal.info');
-Route::post('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@submitPersonalInfo')->name('dashboard.collaborator.personal.info.save');
-Route::put('/personal-information', 'App\Http\Controllers\Auth\CollaboratorController@personalInfoUpdate')->name('dashboard.collaborator.personal.info.update');
-Route::get('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@formRecommendationLetter')->name('dashboard.collaborator.recommandation.letter');
-Route::post('/recommendation-letter', 'App\Http\Controllers\Auth\CollaboratorCollaboratorsController@submitRecommendationLetter')->name('dashboard.collaborator.recommandation.letter.save');
 
 
 
 // Route::put('/new-exam', 'App\Http\Controllers\CollaboratorExamController@newExamUpdate')->name('dashboard.collaborator.new.exam.update');
 
-Route::get('/collaborators', 'App\Http\Controllers\CollaboratorCollaboratorsController@index')->name('dashboard.collaborator.list');
-Route::get('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorCollaboratorsController@formCollaboratorPersonalInfo')->name('dashboard.collaborator.collaborator.personal.info');
-Route::put('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorPersonalInfoUpdate')->name('dashboard.collaborator.collaborator.personal.info.update');
-Route::put('/{:id}/nivel', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorNivelUpdate')->name('dashboard.collaborator.collaborator.nivel.update');
-Route::delete('/{:id}', 'App\Http\Controllers\CollaboratorCollaboratorsController@collaboratorsDelete')->name('dashboard.collaborator.collaborator.delete');
 
-Route::get('/students', 'App\Http\Controllers\CollaboratorStudentsController@index')->name('dashboard.collaborator.students');
 
-Route::prefix('student')->group(function () {
-    Route::get('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorStudentsController@formStudentPersonalInformation')->name('dashboard.collaborator.student.personal-info');
-    Route::put('/{:id}/personal-information', 'App\Http\Controllers\CollaboratorStudentsController@studentPersonalInformationUpdate')->name('dashboard.collaborator.student.personal.info.update');
-    Route::get('/{:id}/institution', 'App\Http\Controllers\CollaboratorStudentsController@formStudentInstituition')->name('dashboard.collaborator.students.institution');
-    Route::put('/{:id}/institution', 'App\Http\Controllers\CollaboratorStudentsController@studentInstituitionUpdate')->name('dashboard.collaborator.students.institution.update');
-    Route::get('/{:id}/area', 'App\Http\Controllers\CollaboratorStudentsController@formStudentArea')->name('dashboard.collaborator.students.area');
-    Route::put('/{:id}/area', 'App\Http\Controllers\CollaboratorStudentsController@studentAreaUpdate')->name('dashboard.collaborator.students.area.update');
-    Route::get('/{:id}/document', 'App\Http\Controllers\CollaboratorStudentsController@formStudentDocument')->name('dashboard.collaborator.student.document');
-    Route::put('/{:id}/document', 'App\Http\Controllers\CollaboratorStudentsController@studentDocumentUpdate')->name('dashboard.collaborator.student.document.update');
-    Route::get('/{:id}/recommnedation-letter', 'App\Http\Controllers\CollaboratorStudentsController@formStudentRecommendationLetter')->name('dashboard.collaborator.student.document');
-    Route::put('/{:id}/recommendation-letter', 'App\Http\Controllers\CollaboratorStudentsController@studentRecommendationLetterUpdate')->name('dashboard.collaborator.student.document.update'); 
-    Route::delete('/{:id}', 'App\Http\Controllers\CollaboratorStudentsController@studentDelete')->name('dashboard.collaborator.student');
-});
 
 Route::prefix('relatorio')->group(function () {
     Route::get('/1', 'App\Http\Controllers\CollaboratorRelatorioController@formRelatorio1');

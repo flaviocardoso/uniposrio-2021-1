@@ -58,10 +58,8 @@ Route::middleware('auth:collaborator')->group( function () {
 
     Route::get('/personal-information', 'PersonalInfoController@form')->name('dashboard.personal.info');
     Route::post('/personal-information', 'PersonalInfoController@submit')->name('dashboard.personal.info.save');
-    Route::put('/personal-information', 'PersonalInfoController@update')->name('dashboard.personal.info.update');
-    // Route::get('/recommendation-letter', 'RecommendationLetterController@form')->name('dashboard.recommandation.letter');
-    // Route::post('/recommendation-letter', 'RecommendationLetterController@submit')->name('dashboard.recommandation.letter.save');
-
+    // Route::put('/personal-information', 'PersonalInfoController@update')->name('dashboard.personal.info.update');
+    
     Route::prefix('collaborators')->group(function () {
         Route::get('/', 'CollaboratorsController@list')->name('dashboard.collaborator.list');
         Route::get('/{id}/personal-information', 'CollaboratorsController@formInfo')->name('dashboard.collaborator.personal-info');
@@ -87,6 +85,8 @@ Route::middleware('auth:collaborator')->group( function () {
 
 });
 
+Route::get('/recommendation-letter', 'RecommendationLetterController@form')->name('dashboard.recommandation.letter');
+Route::post('/recommendation-letter', 'RecommendationLetterController@submit')->name('dashboard.recommandation.letter.save');
 
 
 

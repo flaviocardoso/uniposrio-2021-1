@@ -29,8 +29,6 @@ class ForgotPasswordController extends Controller
                 'token' => $token,
                 'email' => $notifiable->getEmailForPasswordReset(),
             ], false));
-            echo $url;
-            exit;
             return (new MailMessage)
                 ->subject(Lang::get('Reset Password Notification'))
                 ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))

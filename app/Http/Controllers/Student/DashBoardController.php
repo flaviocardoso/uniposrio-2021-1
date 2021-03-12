@@ -12,7 +12,7 @@ class DashBoardController extends Controller
     {
         $this->middleware('auth:student');
         $this->middleware('verified:student.verify');
-        $this->middleware('password.confirm:student.confirm');
+        // $this->middleware('password.confirm:student.confirm');
     }
 
     public function index()

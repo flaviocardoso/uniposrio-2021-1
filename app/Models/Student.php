@@ -29,6 +29,8 @@ class Student extends Model implements
         'name',
         'user',
         'email',
+        'active',
+        'role',
         'password'
     ];
 
@@ -39,6 +41,8 @@ class Student extends Model implements
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
+        'role' => 'array'
     ];
 
 }

@@ -1,0 +1,63 @@
+
+/* botão toggle switch */
+.togglebuttoncompoment {
+    display: flex;
+    align-items: center;
+}
+
+.togglebuttoncompoment div {
+    margin: 20px;
+}
+
+.switchcompoment {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    overflow: hidden;
+    background: #253b53;
+    border-radius: 5px;
+}
+
+.switchcompoment input {
+    display: none;
+}
+
+.togglecomponent {
+    position: absolute;
+    background: #fff5ff;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.togglecomponent:after {
+    border: solid 8px #253b52;
+    content: " ";
+    z-index: 99;
+    width: 84px;
+    height: 34px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.togglecomponent:before {
+    position: absolute;
+    content: " ";
+    height: 40px;
+    width: 100px;
+    background: #fff;
+    top: 5px;
+    left: -52px;
+    transition: left .4s ease-in-out, background .4s ease;
+}
+
+.switchcompoment:hover .togglecomponent:before {
+    cursor: pointer;
+}
+
+.togglebuttoncompoment input:checked + .toggle:before {
+    left: 52px;
+}

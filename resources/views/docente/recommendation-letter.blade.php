@@ -103,7 +103,7 @@
             Prezado Professor, favor preencher os dados da tabela abaixo, segundo a avaliação que faz do candidato<br/><em>Dear Referee, please fill in the fields in the table below, according to your assessment of the candidate</em>
         </b>
         </label>
-        <div class="row">
+        <div class="row ms-0">
         <div class="col-4 border-end"  style="width: 38.9%;"></div>
         <div class="col-2" style="width: 9.9%;">
         <p>5% superior (Muito bom)</p>
@@ -127,8 +127,8 @@
         <p><em>I do not know</em></p>
         </div>
         </div>
-        <div class="row">
-        <div class="col-4  border-end border-top"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0  border-end border-top"  style="width: 38.9%;">
         Domínio da área de atuação<br>
         <em>Skills in the domain of interest</em>
         </div>
@@ -148,8 +148,8 @@
         <input type="radio" name="formulario[dominio]" class="form-check-input" id="radio5" value="0">
         </div>
         </div>
-        <div class="row">
-        <div class="col-4 pl-0 border-end border-top"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0 border-end border-top"  style="width: 38.9%;">
         Capacidade intelectual<br>
         <em>Intellectual capacity</em>
         </div>
@@ -169,8 +169,8 @@
         <input type="radio" name="formulario[intelectual]" class="form-check-input" id="radio10" value="0">
         </div>
         </div>
-        <div class="row">
-        <div class="col-4 pl-0 border-end border-top"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0 border-end border-top"  style="width: 38.9%;">
         Iniciativa<br>
         <em>Initiative</em>
         </div>
@@ -190,8 +190,8 @@
         <input type="radio" name="formulario[iniciativa]" class="form-check-input" id="radio15" value="0">
         </div>
         </div>
-        <div class="row">
-        <div class="col-4 pl-0 border-end border-top"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0 border-end border-top"  style="width: 38.9%;">
         Capacidade de comunicação oral<br>
             <em>Oral communication skills</em>
         </div>
@@ -211,8 +211,8 @@
         <input type="radio" name="formulario[comunicacao_oral]" class="form-check-input" id="radio20" value="0">
         </div>
         </div>
-        <div class="row">
-        <div class="col-4 pl-0 border-end border-top"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0 border-end border-top"  style="width: 38.9%;">
         Capacidade de comunicação escrita<br>
             <em>Written communication skills</em>
         </div>
@@ -232,8 +232,8 @@
         <input type="radio" name="formulario[comunicacao_escrita]" class="form-check-input" id="radio25" value="0">
         </div>
         </div>
-        <div class="row">
-        <div class="col-4 pl-0 border-end border-top border-bottom"  style="width: 38.9%;">
+        <div class="row ms-0">
+        <div class="col-4 ps-0 border-end border-top border-bottom"  style="width: 38.9%;">
         Relaciomento com o grupo de trabalho<br>
             <em>Interpersonal skills with other members of the  work group</em>
         </div>

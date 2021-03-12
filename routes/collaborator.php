@@ -62,29 +62,32 @@ Route::middleware('auth:collaborator')->group( function () {
     
     Route::prefix('collaborators')->group(function () {
         Route::get('/', 'CollaboratorsController@list')->name('dashboard.collaborator.list');
-        Route::get('/{id}/personal-information', 'CollaboratorsController@formInfo')->name('dashboard.collaborator.personal-info');
-        Route::put('/{id}/personal-information', 'CollaboratorsController@updateInfo')->name('dashboard.collaborator.personal-info.update');
+        Route::post('/{id}/user', 'CollaboratorsController@updateuser')->name('dashboard.collaborator.personal-user');
+        Route::post('/{id}/nome', 'CollaboratorsController@updatenome')->name('dashboard.collaborator.personal-nome');
+        Route::post('/{id}/email', 'CollaboratorsController@updateemail')->name('dashboard.collaborator.personal-email');
+        Route::get('/{id}/personal-information', 'CollaboratorsController@form')->name('dashboard.collaborator.personal-info');
+        Route::post('/{id}/personal-information', 'CollaboratorsController@submit')->name('dashboard.collaborator.personal-info.update');
         Route::put('/{id}/nivel', 'CollaboratorsController@updateNivel')->name('dashboard.collaborator.collaborator.nivel.update');
-        Route::delete('/{:id}', 'CollaboratorsController@delete')->name('dashboard.collaborator.delete');
+        Route::get('/{id}/toggleactive', 'CollaboratorsController@toggleActive')->name('dashboard.collaborator.active');
     });
 
     Route::prefix('students')->group(function () {
         Route::get('/', 'StudentsController@list')->name('dashboard.student');
-        Route::get('/{:id}/personal-information', 'StudentsController@formInfo')->name('dashboard.student.personal-info');
-        Route::put('/{:id}/personal-information', 'StudentsController@UpdateInfo')->name('dashboard.student.personal-info.update');
-        Route::get('/{:id}/institution', 'StudentsController@formInstituition')->name('dashboard.student.institution');
-        Route::put('/{:id}/institution', 'StudentsController@InstituitionUpdate')->name('dashboard.student.institution.update');
-        Route::get('/{:id}/area', 'StudentsController@formArea')->name('dashboard.student.area');
-        Route::put('/{:id}/area', 'StudentsController@AreaUpdate')->name('dashboard.student.area.update');
-        Route::get('/{:id}/document', 'StudentsController@formDocument')->name('dashboard.student.document');
-        Route::put('/{:id}/document', 'StudentsController@DocumentUpdate')->name('dashboard.student.document.update');
-        Route::get('/{:id}/recommnedation-letter', 'StudentsController@formRecommendationLetter')->name('dashboard.student.document');
-        Route::put('/{:id}/recommendation-letter', 'StudentsController@recommendationLetterUpdate')->name('dashboard.student.document.update'); 
-        Route::delete('/{:id}', 'StudentsController@delete')->name('dashboard.student.delete');
+        Route::get('/{id}/personal-information', 'StudentsController@formInfo')->name('dashboard.student.personal-info');
+        Route::put('/{id}/personal-information', 'StudentsController@UpdateInfo')->name('dashboard.student.personal-info.update');
+        Route::get('/{id}/institution', 'StudentsController@formInstituition')->name('dashboard.student.institution');
+        Route::put('/{id}/institution', 'StudentsController@InstituitionUpdate')->name('dashboard.student.institution.update');
+        Route::get('/{id}/area', 'StudentsController@formArea')->name('dashboard.student.area');
+        Route::put('/{id}/area', 'StudentsController@AreaUpdate')->name('dashboard.student.area.update');
+        Route::get('/{id}/document', 'StudentsController@formDocument')->name('dashboard.student.document');
+        Route::put('/{id}/document', 'StudentsController@DocumentUpdate')->name('dashboard.student.document.update');
+        Route::get('/{id}/recommnedation-letter', 'StudentsController@formRecommendationLetter')->name('dashboard.student.document');
+        Route::put('/{id}/recommendation-letter', 'StudentsController@recommendationLetterUpdate')->name('dashboard.student.document.update'); 
+        Route::delete('/{id}', 'StudentsController@delete')->name('dashboard.student.delete');
     });
 
 });
-
+// ainda não tem inscrição
 Route::get('/recommendation-letter', 'RecommendationLetterController@form')->name('dashboard.recommandation.letter');
 Route::post('/recommendation-letter', 'RecommendationLetterController@submit')->name('dashboard.recommandation.letter.save');
 

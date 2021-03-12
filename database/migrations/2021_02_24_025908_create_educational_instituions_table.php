@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEmailVerified extends Migration
+class CreateEducationalInstituionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddEmailVerified extends Migration
      */
     public function up()
     {
-        Schema::table('students', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable();
+        Schema::create('educational_instituions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('sigla');
+            $table->string('nome');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddEmailVerified extends Migration
      */
     public function down()
     {
-        Schema::table('students', function (Blueprint $table) {
-            $table->dropColumn('email_verified_at');
-        });
+        Schema::dropIfExists('educational_instituions');
     }
 }

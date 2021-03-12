@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\URL;
 class VerificationController extends Controller
 {
     use Verification;
-
     protected $redirectTo = '/collaborator';
     protected $guard = 'collaborator';
 
@@ -32,8 +31,6 @@ class VerificationController extends Controller
                     'hash' => sha1($notifiable->getEmailForVerification()),
                 ]
             );
-            // echo $url;
-            // exit;
             return $url;
         });
     }

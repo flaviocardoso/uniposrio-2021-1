@@ -1,12 +1,17 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Collaborator;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 
 trait Register
@@ -21,6 +26,8 @@ trait Register
             'name' => $data['name'],
             'email' => $data['email'],
             'user' => $data['user'],
+            'active' => true,
+            'role' => [],
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -69,12 +76,32 @@ trait Register
     public function store(Request $request)
     {
         $this->validator($request->except('_token'))->validate();
-        
-        event(new Registered($user = $this->create($request->except('_token'))));
-        
-        $this->guard()->login($user);
+        $user = $this->create($request->except('_token'));
         $this->guardLogouts();
-
+        
+        $redirecionamento = 'student.verify.submit';
+        if (get_class($user) == 'App\Models\Collaborator') {
+            $redirecionamento = 'collaborator.verify.submit';
+        }
+        if (get_class($user) == 'App\Models\Student') {
+            $redirecionamento = 'student.verify.submit';
+        }
+        
+        VerifyEmail::createUrlUsing(function ($notifiable) use ($redirecionamento) {
+            $url = URL::temporarySignedRoute(
+                $redirecionamento,
+                Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+                [
+                    'id' => $notifiable->getKey(),
+                    'hash' => sha1($notifiable->getEmailForVerification()),
+                    ]
+                );
+                return $url;
+            });
+            
+        event(new Registered($user));
+        $this->guard()->login($user);
+            
         if ($response = $this->registered($request, $user)) {
             return $response;
         }

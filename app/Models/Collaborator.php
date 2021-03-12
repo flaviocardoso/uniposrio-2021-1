@@ -29,6 +29,8 @@ class Collaborator extends Model implements
         'name',
         'user',
         'email',
+        'active',
+        'role',
         'password'
     ];
 
@@ -39,6 +41,19 @@ class Collaborator extends Model implements
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
+        'role' => 'array',
     ];
+
+    public function setActiveAttribute($value)
+    {
+        $this->attributes['active'] = !!$value;
+    }
+
+    public function getActiveAttribute()
+    {
+        return (boolean) !!$this->attributes['active'];
+    }
+
 
 }
